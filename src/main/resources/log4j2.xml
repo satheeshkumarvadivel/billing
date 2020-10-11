@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="%style{%d{ISO8601}}{black} %highlight{%-5level } ------------ [%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
+		</Console>
+
+		<RollingFile name="RollingFile"
+			fileName="/opt/application/logs/v6pictures/v6pictures.log"
+			filePattern="/opt/application/logs/v6pictures/v6pictures-%d{-dd-MMMM-yyyy}-%i.log">
+			<PatternLayout>
+				<pattern>%d %p %C{1.} [%t] %m%n</pattern>
+			</PatternLayout>
+			<Policies>
+				<!-- rollover when the file reaches 10 MegaBytes -->
+				<SizeBasedTriggeringPolicy size="10 MB" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+		<!-- LOG everything at INFO level -->
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="RollingFile" />
+		</Root>
+
+		<Logger name="com.satheesh" level="debug"></Logger>
+	</Loggers>
+
+</Configuration>

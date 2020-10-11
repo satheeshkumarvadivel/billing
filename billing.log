@@ -1,0 +1,12 @@
+2020-10-11 15:15:52.667  INFO 6336 --- [Test worker] c.s.billing.BillingApplicationTests      : Starting BillingApplicationTests on SATVADIV-3VHM8 with PID 6336 (started by satvadiv in C:\Users\satvadiv\Desktop\billing)
+2020-10-11 15:15:52.669  INFO 6336 --- [Test worker] c.s.billing.BillingApplicationTests      : No active profile set, falling back to default profiles: default
+2020-10-11 15:15:55.030  INFO 6336 --- [Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-11 15:15:55.231  INFO 6336 --- [Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2020-10-11 15:15:55.605  INFO 6336 --- [Test worker] c.s.billing.BillingApplicationTests      : Started BillingApplicationTests in 3.346 seconds (JVM running for 5.737)
+2020-10-11 15:15:55.954  INFO 6336 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2020-10-11 15:28:16.495  INFO 1120 --- [Test worker] c.s.billing.BillingApplicationTests      : Starting BillingApplicationTests on SATVADIV-3VHM8 with PID 1120 (started by satvadiv in C:\Users\satvadiv\Desktop\billing)
+2020-10-11 15:28:16.504  INFO 1120 --- [Test worker] c.s.billing.BillingApplicationTests      : No active profile set, falling back to default profiles: default
+2020-10-11 15:28:18.923  INFO 1120 --- [Test worker] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2020-10-11 15:28:19.129  INFO 1120 --- [Test worker] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2020-10-11 15:28:19.495  INFO 1120 --- [Test worker] c.s.billing.BillingApplicationTests      : Started BillingApplicationTests in 3.44 seconds (JVM running for 6.065)
+2020-10-11 15:28:19.912  INFO 1120 --- [SpringContextShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
