@@ -3,7 +3,7 @@ package com.satheesh.billing.model;
 public class Product {
 	int product_id;
 	String product_name;
-	String desctiption;
+	String description;
 	float price;
 	int in_stock_qty;
 
@@ -29,12 +29,12 @@ public class Product {
 		this.product_name = product_name;
 	}
 
-	public String getDesctiption() {
-		return desctiption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesctiption(String desctiption) {
-		this.desctiption = desctiption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public float getPrice() {
@@ -55,7 +55,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [product_id=" + product_id + ", product_name=" + product_name + ", desctiption=" + desctiption
+		return "Product [product_id=" + product_id + ", product_name=" + product_name + ", description=" + description
 				+ ", price=" + price + ", in_stock_qty=" + in_stock_qty + "]";
 	}
 

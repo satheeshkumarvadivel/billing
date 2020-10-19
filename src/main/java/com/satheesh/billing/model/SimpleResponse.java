@@ -2,21 +2,20 @@ package com.satheesh.billing.model;
 
 public class SimpleResponse {
 
-	int statusCode;
+	int code;
 	String message = "";
 
-	public SimpleResponse(int statusCode, String message) {
-		super();
-		this.statusCode = statusCode;
+	public SimpleResponse(int status, String message) {
+		this.code = status;
 		this.message = message;
 	}
 
-	public int getStatusCode() {
-		return statusCode;
+	public int getCode() {
+		return code;
 	}
 
-	public void setStatusCode(int statusCode) {
-		this.statusCode = statusCode;
+	public void setCode(int code) {
+		this.code = code;
 	}
 
 	public String getMessage() {
@@ -29,7 +28,7 @@ public class SimpleResponse {
 
 	@Override
 	public String toString() {
-		return "SimpleResponse [statusCode=" + statusCode + ", message=" + message + "]";
+		return "SimpleResponse [code=" + code + ", message=" + message + "]";
 	}
 
 }

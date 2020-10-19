@@ -1,18 +1,23 @@
 package com.satheesh.billing.controller;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class MainController {
 
-	private Logger logger = LogManager.getLogger(this.getClass());
-
 	@GetMapping("/")
-	public String getHome() {
-		logger.info("Get controller");
+	public String getBilling() {
 		return "index.html";
+	}
+	
+	@GetMapping("/products")
+	public String getProduct() {
+		return "products.html";
+	}
+
+	@GetMapping("/customers")
+	public String getCustomer() {
+		return "customer.html";
 	}
 }
