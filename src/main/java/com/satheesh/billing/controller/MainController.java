@@ -20,4 +20,9 @@ public class MainController {
 	public String getCustomer() {
 		return "customer.html";
 	}
+
+	@GetMapping("/invoices")
+	public String getInvoice() {
+		return "invoice.html";
+	}
 }

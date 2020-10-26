@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.satheesh.billing.model.Customer;
 import com.satheesh.billing.model.Invoice;
+import com.satheesh.billing.model.InvoiceItem;
+import com.satheesh.billing.model.Product;
 
 @Repository
 public class InvoiceDao {
@@ -77,7 +79,8 @@ public class InvoiceDao {
 
 		if (search != null && search.trim().length() > 0) {
 			sql += " WHERE lower(cust.company_name) like '%" + search.trim().toLowerCase()
-					+ "%' OR lower(cust.customer_name) like '%" + search.trim().toLowerCase() + "%'";
+					+ "%' OR lower(cust.customer_name) like '%" + search.trim().toLowerCase() + "%'"
+					+ " OR lower(cust.contact_number_1) like '%" + search.trim().toLowerCase() + "%'";
 		}
 
 		sql += " order by invoice_date desc limit 1000";
@@ -103,6 +106,52 @@ public class InvoiceDao {
 				invoice.setCustomer(customer);
 				invoices.add(invoice);
 			}
+		}
+		return invoices;
+
+	}
+
+	public List<Invoice> getInvoiceById(int invoice_id) {
+		List<Invoice> invoices = new ArrayList<>();
+
+		String sql = "select inv.id, cust.customer_name, cust.contact_number_1, inv.price, inv.payment_received, inv.invoice_date, item.customer_id, item.product_id, "
+				+ "prod.product_name, item.price as item_price, item.quantity, item.total from invoice_item item join customer cust on item.customer_id = cust.id join invoice inv "
+				+ "on item.invoice_id = inv.id join product prod on prod.id = item.product_id where inv.id = ?";
+
+		logger.info("Query : " + sql);
+		List<Map<String, Object>> results = jdbc.queryForList(sql, invoice_id);
+		if (results != null) {
+			Invoice invoice = new Invoice();
+			for (Map<String, Object> map : results) {
+				invoice.setInvoice_id((Integer) map.get("id"));
+				invoice.setInvoice_date(String.valueOf(map.get("invoice_date")));
+				BigDecimal invoiceTotal = (BigDecimal) map.get("price");
+				invoice.setPrice(invoiceTotal.floatValue());
+
+				BigDecimal payment_received = (BigDecimal) map.get("payment_received");
+				invoice.setPayment_received(payment_received.floatValue());
+
+				Customer customer = new Customer();
+				customer.setCustomer_id((Integer) map.get("customer_id"));
+				customer.setCompany_name(String.valueOf(map.get("company_name")));
+				customer.setCustomer_name(String.valueOf(map.get("customer_name")));
+				customer.setContact_number_1(String.valueOf(map.get("contact_number_1")));
+				invoice.setCustomer(customer);
+
+				InvoiceItem item = new InvoiceItem();
+				BigDecimal itemPrice = (BigDecimal) map.get("item_price");
+				item.setPrice(itemPrice.floatValue());
+				item.setQuantity((Integer) map.get("quantity"));
+				BigDecimal itemTotal = (BigDecimal) map.get("total");
+				item.setTotal(itemTotal.floatValue());
+
+				Product product = new Product();
+				product.setProduct_id((Integer) map.get("product_id"));
+				product.setProduct_name(String.valueOf(map.get("product_name")));
+				item.setProduct(product);
+				invoice.getItems().add(item);
+			}
+			invoices.add(invoice);
 		}
 		return invoices;
 

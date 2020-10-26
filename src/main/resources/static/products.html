@@ -26,7 +26,7 @@
     <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="billing" id="billingNavItem">
+          <a class="nav-link" href="/" id="billingNavItem">
             BILLING
           </a>
         </li>
@@ -102,7 +102,7 @@
                     <form>
                       <div class="form-group">
                         <label for="productName">Product Name*</label>
-                        <input type="text" class="form-control" id="productName" aria-describedby="productHelp">
+                        <input type="text" class="form-control" id="productName" aria-describedby="productHelp" autocomplete="off">
                         <small id="productHelp" class="form-text text-muted">Please provide a name for the product. This
                           will be used to search a product.</small>
                       </div>
@@ -112,7 +112,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="productPrice">Price</label>
-                      <input type="text" class="form-control" id="productPrice" aria-describedby="priceHelp">
+                      <input type="text" class="form-control" id="productPrice" aria-describedby="priceHelp" autocomplete="off">
                       <small id="priceHelp" class="form-text text-muted">Please provide the selling price of the
                         product. If not provided, the price will be set to 0.</small>
                     </div>
@@ -120,7 +120,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="productQuantity">Quantity</label>
-                      <input type="text" class="form-control" id="productQuantity"
+                      <input type="text" class="form-control" id="productQuantity" autocomplete="off"
                         aria-describedby="productQuantityHelp">
                       <small id="productQuantityHelp" class="form-text text-muted">How many of this product should be
                         added to the stock?</small>
@@ -131,7 +131,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="description">Description</label>
-                      <textarea class="form-control" id="description" rows="3"
+                      <textarea class="form-control" id="description" rows="3" autocomplete="off"
                         aria-describedby="descriptionHelp"></textarea>
                       <small id="descriptionHelp" class="form-text text-muted">Please provide a brief description about
                         the product.</small>

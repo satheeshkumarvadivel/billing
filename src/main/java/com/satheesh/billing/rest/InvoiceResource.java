@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,9 +33,21 @@ public class InvoiceResource {
 	InvoiceDao invoiceDao;
 
 	@GetMapping("/invoice")
-	public ResponseEntity<?> getInvoice(@RequestParam(value = "search", required = false) String search) {
+	public ResponseEntity<?> getInvoices(@RequestParam(value = "search", required = false) String search) {
 		try {
 			List<Invoice> invoices = invoiceDao.getInvoices(search);
+			return new ResponseEntity<List<Invoice>>(invoices, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("Exception occurred while creating invoice : ", e);
+			return new ResponseEntity<>(new SimpleResponse(500, "ERROR: Unable to get invoice details."),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/invoice/{invoiceId}")
+	public ResponseEntity<?> getInvoiceById(@PathVariable(value = "invoiceId") Integer invoiceId) {
+		try {
+			List<Invoice> invoices = invoiceDao.getInvoiceById(invoiceId);
 			return new ResponseEntity<List<Invoice>>(invoices, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Exception occurred while creating invoice : ", e);

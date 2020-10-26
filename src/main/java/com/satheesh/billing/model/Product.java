@@ -13,6 +13,10 @@ public class Product {
 		this.product_name = product_name;
 	}
 
+	public Product() {
+
+	}
+
 	public int getProduct_id() {
 		return product_id;
 	}

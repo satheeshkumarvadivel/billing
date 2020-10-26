@@ -1,5 +1,6 @@
 package com.satheesh.billing.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Invoice {
@@ -7,7 +8,7 @@ public class Invoice {
 	int invoice_id;
 	String invoice_date;
 	Customer customer;
-	List<InvoiceItem> items;
+	List<InvoiceItem> items = new ArrayList<>();
 	float price;
 	float payment_received;
 

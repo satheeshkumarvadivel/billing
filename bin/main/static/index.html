@@ -18,7 +18,10 @@
 
 <body>
   <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
-    <a class="navbar-brand" href="#">VETRIVEL MILLS</a>
+    <a class="navbar-brand" href="#">
+      <!-- <img src="img/logo.png" width="30" height="30" alt=""> -->
+      VETRIVEL MILLS
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
       aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -49,57 +52,55 @@
     </div>
   </nav>
   <div class=".container-fluid">
-    <div class="row" style="padding-top: 50px;">
+    <div class="row" style="padding-top: 25px;">
       <div class="col-lg-4" style="padding-left: 50px;">
-        <div class="input-group mb-3">
-          <input type="text" id="searchInvoiceCustomer" class="form-control" placeholder="Search Customer Name"
-            aria-label="Search Customer Name">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="input-group mb-3">
+              <input type="text" id="searchInvoiceItem" class="form-control" placeholder="Search Product Name"
+                aria-label="Search Product Name">
+            </div>
+            <div class="list-group" id="itemsListGroup" style="height: 491px; overflow-y: auto; margin-bottom: 20px;">
+              <button type="button" class="list-group-item list-group-item-action" disabled>No Products
+                Available!</button>
+            </div>
+          </div>
         </div>
-        <div class="list-group" id="customersListGroup" style="height: 198px; overflow-y: auto; margin-bottom: 20px;">
-          <button type="button" customer_id="1" customer_name="Customer Name 1"
-            class="list-group-item list-group-item-action">Customer Name 1</button>
-          <button type="button" customer_id="2" customer_name="Customer Name 2"
-            class="list-group-item list-group-item-action">Customer Name 2</button>
-          <button type="button" customer_id="3" customer_name="Customer Name 3"
-            class="list-group-item list-group-item-action">Customer Name 3</button>
-          <button type="button" customer_id="4" customer_name="Customer Name 4"
-            class="list-group-item list-group-item-action">Customer Name 4</button>
-          <button type="button" customer_id="5" customer_name="Customer Name 5"
-            class="list-group-item list-group-item-action">Customer Name 5</button>
-          <button type="button" customer_id="6" customer_name="Customer Name 6"
-            class="list-group-item list-group-item-action">Customer Name 6</button>
-          <button type="button" customer_id="7" customer_name="Customer Name 7"
-            class="list-group-item list-group-item-action" disabled>Customer Name
-            7</button>
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" id="searchInvoiceItem" class="form-control" placeholder="Search Product Name"
-            aria-label="Search Product Name">
-        </div>
-        <div class="list-group" id="itemsListGroup" style="height: 198px; overflow-y: auto; margin-bottom: 20px;">
-          <button type="button" class="list-group-item list-group-item-action" disabled>No Products Available!</button>
-        </div>
+        <div class="row">
+          <div class="col-lg-12">
 
+          </div>
+        </div>
       </div>
       <div class="col-lg-8" id="invoiceRightPane" style="padding-right: 50px;">
-        <table class="table table-striped table-bordered table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">S.No</th>
-              <th scope="col">Product Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
+        <div style="max-height: 600px; overflow: auto;">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
 
-          <tbody id="invoice_table_body">
-            <tr>
-              <td colspan="6" style="text-align: center;">No Items added!</td>
-            </tr>
-          </tbody>
-        </table>
+            <tbody id="invoice_table_body">
+              <tr>
+                <td colspan="6" style="text-align: center;">No Items added!</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card" style="width: 18rem; float: right;">
+          <div class="card-body">
+            <h3 class="card-title" id="totalCardTitle">Total: 0.0 Rs</h3>
+            <p class="card-subtitle mb-2 text-muted">Inclusive of all taxes</p>
+            <button style="margin-right: 5px;" class="btn btn-primary" id="invoiceCheckoutButton">Checkout</button>
+            <button class="btn btn-danger" id="invoiceCancelButton">Clear</button>
+          </div>
+        </div>
         <!-- Add invoice item modal -->
         <div class="modal fade" id="addInvoiceItemModal" tabindex="-1" role="dialog"
           aria-labelledby="addInvoiceItemModalLabel" aria-hidden="true">
@@ -124,7 +125,8 @@
                           <label for="productName">Product Name</label>
                           <input type="text" class="form-control" id="productName" aria-describedby="productHelp"
                             readonly>
-                            <input type="text" class="form-control" id="productId" aria-describedby="productHelp" style="display: none;">
+                          <input type="text" class="form-control" id="productId" aria-describedby="productHelp"
+                            style="display: none;">
                         </div>
                     </div>
                   </div>
@@ -132,7 +134,8 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="productPrice">Price</label>
-                        <input type="text" class="form-control" id="productPrice" aria-describedby="priceHelp">
+                        <input type="text" class="form-control" id="productPrice" aria-describedby="priceHelp"
+                          autocomplete="off">
                         <small id="priceHelp" class="form-text text-muted">You can change the price if you wish. This
                           amount will be used only for the current invoice.</small>
                       </div>
@@ -140,7 +143,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="productQuantity">Quantity</label>
-                        <input type="text" class="form-control" id="productQuantity"
+                        <input type="text" class="form-control" id="productQuantity" autocomplete="off"
                           aria-describedby="productQuantityHelp">
                         <small id="productQuantityHelp" class="form-text text-muted">Please provide product
                           quantity.</small>
@@ -175,19 +178,97 @@
             </div>
           </div>
         </div>
+        <!-- Checkout Modal -->
+        <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Checkout Items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="alert alert-success fade show" role="alert" id="checkoutSuccessAlert"
+                        style="display: none;">
+                        <span id="checkoutSuccessMsg">Invoice created successfully!</span>
+                      </div>
+                      <div class="alert alert-danger fade show" role="alert" id="checkoutErrorAlert"
+                        style="display: none;">
+                        <strong>ERROR: </strong> <span id="checkoutErrorMsg"></span>
+                      </div>
+                      <form>
+                        <div class="input-group mb-3">
+                          <input type="text" id="customerPhNumber" class="form-control"
+                            placeholder="Search Customer Ph.No" aria-label="Search Customer Ph.No"
+                            aria-describedby="searchCustomerPhNumber">
+                          <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"
+                              id="searchCustomerPhNumber">Search</button>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <form>
+                          <div class="form-group">
+                            <label for="customerNumber">Customer Name</label>
+                            <input type="text" id="checkoutCustomerId" style="display: none;">
+                            <input type="text" class="form-control" id="customerNumber"
+                              aria-describedby="customerNumberHelp" autocomplete="off" readonly>
+                            <small id="customerNumberHelp" class="form-text text-muted">If customer is new, please
+                              create customer first.</small>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="amountReceived">Amount Received</label>
+                          <input type="text" class="form-control" id="amountReceived" autocomplete="off"
+                            aria-describedby="amountReceivedHelp">
+                          <small id="amountReceivedHelp" class="form-text text-muted">Amount received from the
+                            customer.</small>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <span>Total: </span>
+                        <span id="checkoutTotal" style="font-size: 24px; font-weight: 400;"> </span>
+                        <p>Remaining: <span id="checkoutRemaining" style="font-size: 18px; font-weight: 400;">
+                          </span>
+                        </p>
+                        <div class="form-group form-check" style="display: none;" id="payLaterDiv">
+                          <input type="checkbox" class="form-check-input" id="checkOutPayLater">
+                          <label class="form-check-label" for="checkOutPayLater" id="payLaterLabel">Pay later</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="createInvoiceButton">Save</button>
+                  <button type="button" class="btn btn-success" id="printInvoiceButton">Print</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
+
+
+
+
+
+
+
+
+
     </div>
-
-
-
-
-
-
-
-
-
-
-  </div>
 
 
 
