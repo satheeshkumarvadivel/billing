@@ -45,7 +45,7 @@ $(document).ready(function () {
 
 });
 
-var api_host = 'http://localhost:8000';
+var api_host = 'http://65.0.149.38';
 
 function displayInvoices(search) {
     let invoices = getInvoices(search);
