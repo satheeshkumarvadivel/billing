@@ -45,8 +45,6 @@ $(document).ready(function () {
 
 });
 
-var api_host = 'http://65.0.149.38';
-
 function displayProduct(productName) {
     let products = getProducts(productName);
     let tableBody = '';
@@ -96,7 +94,7 @@ function showDeleteProductModal(product) {
 function deleteProduct(product_id) {
     $('#deleteProductErrorAlert').hide();
     $.ajax({
-        url: api_host + "/product/" + product_id,
+        url: properties.api_host + "/product/" + product_id,
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -116,7 +114,7 @@ function deleteProduct(product_id) {
 
 function getProducts(productName) {
     var products = [];
-    let productUrl = api_host + "/product"
+    let productUrl = properties.api_host + "/product"
     if (productName) {
         productUrl += '?product_name=' + encodeURIComponent(productName);
     }
@@ -164,7 +162,7 @@ function validateProduct(product) {
 function createProduct(product) {
     $('#addProductErrorAlert').hide();
     $.ajax({
-        url: api_host + "/product",
+        url: properties.api_host + "/product",
         method: 'POST',
         data: JSON.stringify(product),
         headers: {
@@ -191,7 +189,7 @@ function updateProduct(product) {
     console.log(product);
     $('#editProductErrorAlert').hide();
     $.ajax({
-        url: api_host + "/product/" + product.product_id,
+        url: properties.api_host + "/product/" + product.product_id,
         method: 'PUT',
         data: JSON.stringify(product),
         headers: {

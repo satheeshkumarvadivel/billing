@@ -7,15 +7,20 @@
 		</Console>
 
 		<RollingFile name="RollingFile"
-			fileName="/opt/application/logs/v6pictures/v6pictures.log"
-			filePattern="/opt/application/logs/v6pictures/v6pictures-%d{-dd-MMMM-yyyy}-%i.log">
+			fileName="/opt/application/logs/billing/billing.log"
+			filePattern="/opt/application/logs/billing/billing-%d{-dd-MMMM-yyyy}-%i.log">
 			<PatternLayout>
 				<pattern>%d %p %C{1.} [%t] %m%n</pattern>
 			</PatternLayout>
 			<Policies>
-				<!-- rollover when the file reaches 10 MegaBytes -->
 				<SizeBasedTriggeringPolicy size="10 MB" />
 			</Policies>
+			<DefaultRolloverStrategy>
+				<Delete basePath="${baseDir}" maxDepth="1">
+					<IfFileName glob="*/billing-*" />
+					<IfLastModified age="30d" />
+				</Delete>
+			</DefaultRolloverStrategy>
 		</RollingFile>
 	</Appenders>
 

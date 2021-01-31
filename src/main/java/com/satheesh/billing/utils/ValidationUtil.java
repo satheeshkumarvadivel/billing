@@ -9,6 +9,10 @@ import com.satheesh.billing.model.Customer;
 import com.satheesh.billing.model.Invoice;
 import com.satheesh.billing.model.InvoiceItem;
 import com.satheesh.billing.model.Product;
+import com.satheesh.billing.model.Purchase;
+import com.satheesh.billing.model.PurchaseItem;
+import com.satheesh.billing.model.PurchaseItemType;
+import com.satheesh.billing.model.RawMaterial;
 
 public class ValidationUtil {
 
@@ -113,7 +117,7 @@ public class ValidationUtil {
 			if (item.getProduct() == null || item.getProduct().getProduct_id() == 0)
 				throw new ValidationException("Product id is needed to create an invoice.");
 			productIds.add(item.getProduct().getProduct_id());
-			
+
 			if (item.getPrice() < 0)
 				throw new ValidationException("Product price cannot be less than zero.");
 			if (item.getQuantity() < 0)
@@ -122,6 +126,88 @@ public class ValidationUtil {
 
 		return true;
 
+	}
+
+	public static boolean isValidRawMaterial(RawMaterial material) throws ValidationException {
+		if (material == null)
+			throw new ValidationException("RawMaterial cannot be null");
+
+		if (material.getMaterial_name() == null || material.getMaterial_name().trim().length() == 0)
+			throw new ValidationException("Raw Material name is required.");
+
+		if (material.getMaterial_name() != null && containsInvalidChars(material.getMaterial_name().trim()))
+			throw new ValidationException("Material name contains invalid characters.");
+
+		if (material.getBatch_no() != null && containsInvalidChars(material.getBatch_no().trim()))
+			throw new ValidationException("Batch no contains invalid characters.");
+
+		if (material.getOutput_quantity() < 0)
+			throw new ValidationException("Output quantity cannot be less than zero.");
+
+		if (material.getQuantity() < 0)
+			throw new ValidationException("Quantity cannot be less than zero.");
+
+		return true;
+	}
+
+	public static boolean isValidPurchase(Purchase purchase) throws ValidationException {
+		if (purchase == null)
+			throw new ValidationException("Purchase cannot be null.");
+
+		if (purchase.getItems() == null || purchase.getItems().isEmpty())
+			throw new ValidationException("Purchase should have atlease one purchase item.");
+
+		if (purchase.getPrice() < 0)
+			throw new ValidationException("Purchase price cannot be negative.");
+
+		float totalPrice = 0;
+		for (PurchaseItem item : purchase.getItems()) {
+			if (item.getItem_type() == null)
+				item.setItem_type(PurchaseItemType.PRODUCT);
+
+			if (item.getItem_type().equals(PurchaseItemType.PRODUCT) && item.getProduct_id() == 0)
+				throw new ValidationException("Product id is needed if the purchase item type is PRODUCT.");
+
+			if (!item.getItem_type().equals(PurchaseItemType.PRODUCT)
+					&& (item.getItem_name() == null || item.getItem_name().trim().length() == 0))
+				throw new ValidationException("Item name is needed if the purchase item type is other than PRODUCT.");
+
+			if (item.getItem_name() != null && containsInvalidChars(item.getItem_name().trim()))
+				throw new ValidationException("Item name: " + item.getItem_name() + " contains invalid characters.");
+
+			if (item.getDescription() != null && containsInvalidChars(item.getDescription().trim()))
+				throw new ValidationException(
+						"Description: " + item.getDescription() + " contains invalid characters.");
+
+			if (item.getBatch_no() != null && containsInvalidChars(item.getBatch_no().trim()))
+				throw new ValidationException("Batch No: " + item.getBatch_no() + " contains invalid characters.");
+
+			if (item.getQuantity() < 1)
+				throw new ValidationException("Quantity cannot be less than one.");
+
+			if (item.getPrice() < 0)
+				throw new ValidationException("Price cannot be less than one.");
+
+			if (item.getTotal() < 0)
+				throw new ValidationException("Total cannot be less than one.");
+
+			if (item.getPrice() > 0) {
+				item.setTotal(item.getQuantity() * item.getPrice());
+			}
+			totalPrice += item.getTotal();
+		}
+		purchase.setPrice(totalPrice);
+		return true;
+	}
+
+	public static boolean containsInvalidChars(String input) {
+		if (input != null && input.trim().length() > 0) {
+			if (input.contains("<") || input.contains(">") || input.contains("=") || input.contains("$")
+					|| input.contains("'") || input.contains("{") || input.contains("}")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -71,22 +71,26 @@ public class InvoiceDao {
 
 	}
 
-	public List<Invoice> getInvoices(String search) {
+	public List<Invoice> getInvoices(String search, int page, int size) {
 		List<Invoice> invoices = new ArrayList<>();
+		int limit = (size <= 0) ? 10 : size;
+		int offset = (page <= 1) ? 0 : (page - 1) * limit;
 
+		List<Map<String, Object>> results;
 		String sql = "select inv.id, inv.invoice_date as invoice_date, inv.price, inv.payment_received, cust.id as customer_id, cust.company_name, cust.customer_name, cust.contact_number_1 "
 				+ "from invoice inv join customer cust on inv.customer_id = cust.id";
-
-		if (search != null && search.trim().length() > 0) {
-			sql += " WHERE lower(cust.company_name) like '%" + search.trim().toLowerCase()
-					+ "%' OR lower(cust.customer_name) like '%" + search.trim().toLowerCase() + "%'"
-					+ " OR lower(cust.contact_number_1) like '%" + search.trim().toLowerCase() + "%'";
+		if (search == null || search.trim().length() == 0) {
+			sql += " order by invoice_date desc limit ? offset ?";
+			results = jdbc.queryForList(sql, limit, offset);
+		} else {
+			search = "%" + search.trim().toLowerCase() + "%";
+			sql += " WHERE lower(cust.company_name) like ? OR lower(cust.customer_name) like ? OR lower(cust.contact_number_1) like ?";
+			sql += " order by invoice_date desc limit ? offset ?";
+			results = jdbc.queryForList(sql, search, search, search, limit, offset);
 		}
 
-		sql += " order by invoice_date desc limit 1000";
-
 		logger.info("Query : " + sql);
-		List<Map<String, Object>> results = jdbc.queryForList(sql);
+
 		if (results != null) {
 			for (Map<String, Object> map : results) {
 				Invoice invoice = new Invoice();

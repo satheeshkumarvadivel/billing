@@ -33,9 +33,11 @@ public class InvoiceResource {
 	InvoiceDao invoiceDao;
 
 	@GetMapping("/invoice")
-	public ResponseEntity<?> getInvoices(@RequestParam(value = "search", required = false) String search) {
+	public ResponseEntity<?> getInvoices(@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 		try {
-			List<Invoice> invoices = invoiceDao.getInvoices(search);
+			List<Invoice> invoices = invoiceDao.getInvoices(search, page, size);
 			return new ResponseEntity<List<Invoice>>(invoices, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Exception occurred while creating invoice : ", e);

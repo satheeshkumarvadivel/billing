@@ -8,11 +8,13 @@
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="libs/bootstrap-4.4.1.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <title>Vetrivel Mills</title>
   <script src="libs/jquery-3.4.1.slim.min.js"></script>
   <script src="libs/popper.min.js"></script>
   <script src="libs/bootstrap.min.js"></script>
+  <script src="js/common.js"></script>
   <script src="js/invoice.js"></script>
 </head>
 
@@ -74,6 +76,87 @@
 
           </tbody>
         </table>
+        <div class="modal fade" id="viewInvoiceModal" tabindex="-1" role="dialog"
+          aria-labelledby="viewInvoiceModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="viewInvoiceModalLabel">Invoice Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="row">
+                    <table style="width:100%">
+
+                      <tbody>
+                        <tr>
+                          <td align="center" colspan="5" style="font-weight: 600; font-size: 20px;">VETRI MASALA</td>
+                        </tr>
+                        <tr>
+                          <td align="left" class="invoice_table_heading">Inv No</td>
+                          <td align="left"> : 1001</td>
+                        </tr>
+                        <tr>
+                          <td align="left" class="invoice_table_heading">Date</td>
+                          <td align="left"> : 07/11/2020</td>
+                        </tr>
+                        <hr />
+                        <tr>
+                          <td align="left" class="invoice_table_heading">S.NO</td>
+                          <td align="left" class="invoice_table_heading">PRODUCT NAME</td>
+                          <td align="center" class="invoice_table_heading">QTY</td>
+                          <td align="center" class="invoice_table_heading">PRICE</td>
+                          <td align="right" class="invoice_table_heading">TOTAL</td>
+                        </tr>
+                        <tr>
+                          <td align="left">1</td>
+                          <td align="left">Vetri Chicken Masala 100g</td>
+                          <td align="center">2</td>
+                          <td align="center">15 Rs</td>
+                          <td align="right">30 Rs</td>
+                        </tr>
+                        <tr>
+                          <td align="left">2</td>
+                          <td align="left">Vetri Fish Fry Masala 150g</td>
+                          <td align="center">1</td>
+                          <td align="center">25 Rs</td>
+                          <td align="right">25 Rs</td>
+                        </tr>
+                        <tr>
+                          <td align="left">3</td>
+                          <td align="left">Vetri Mutton Masala 100g</td>
+                          <td align="center">3</td>
+                          <td align="center">18 Rs</td>
+                          <td align="right">46 Rs</td>
+                        </tr>
+                        <tr>
+                          <td colspan="5">
+                            <hr />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td class="invoice_table_heading">Total: </td>
+                          <td align="right" class="invoice_table_heading">101 Rs</td>
+                        </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" id="printInvoice">Print</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
 

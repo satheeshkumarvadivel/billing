@@ -32,9 +32,11 @@ public class ProductResource {
 	ProductsDao productsDao;
 
 	@GetMapping("product")
-	public ResponseEntity<?> getProducts(@RequestParam(value = "product_name", required = false) String product_name) {
+	public ResponseEntity<?> getProducts(@RequestParam(value = "product_name", required = false) String product_name,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 		try {
-			List<Product> products = productsDao.getProducts(product_name);
+			List<Product> products = productsDao.getProducts(product_name, page, size);
 			ResponseEntity<List<Product>> response = new ResponseEntity<>(products, HttpStatus.OK);
 			return response;
 		} catch (Exception e) {

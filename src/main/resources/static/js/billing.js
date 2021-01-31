@@ -37,8 +37,6 @@ $(document).ready(function () {
 
 });
 
-var api_host = 'http://65.0.149.38';
-
 function populateInvoiceItems() {
     let products = getProducts();
     let listItems = '';
@@ -202,7 +200,7 @@ function addInvoiceItem() {
 
 function getProducts(productName) {
     var products = [];
-    let productUrl = api_host + "/product"
+    let productUrl = properties.api_host + "/product"
     if (productName) {
         productUrl += '?product_name=' + encodeURIComponent(productName);
     }
@@ -229,7 +227,7 @@ function createInvoice() {
         invoice.customer.customer_id = customer_id;
     }
 
-    let invoiceUrl = api_host + "/invoice"
+    let invoiceUrl = properties.api_host + "/invoice"
     $.ajax({
         url: invoiceUrl,
         method: 'POST',

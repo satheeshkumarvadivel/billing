@@ -1,5 +1,6 @@
 package com.satheesh.billing.rest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -30,10 +31,20 @@ public class CustomerResource {
 	@Autowired
 	CustomersDao customersDao;
 
+//	@Autowired
+//	CustomerRepository custRepo;
+
 	@GetMapping("customer")
-	public ResponseEntity<?> getProducts(@RequestParam(value = "search", required = false) String search) {
+	public ResponseEntity<?> getCustomers(@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
 		try {
-			List<Customer> customers = customersDao.getCustomers(search);
+			List<Customer> customers = new ArrayList<>();
+			customers = customersDao.getCustomers(search, page, size);
+//			if (search != null) {
+//				customers = custRepo.searchCustomer(search.trim().toLowerCase());				
+//			} else {
+//			}
 			ResponseEntity<List<Customer>> response = new ResponseEntity<>(customers, HttpStatus.OK);
 			return response;
 		} catch (Exception e) {

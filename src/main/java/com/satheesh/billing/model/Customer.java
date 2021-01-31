@@ -1,7 +1,13 @@
 package com.satheesh.billing.model;
 
+//@Entity
 public class Customer {
+
+//	@Id
+//	@GeneratedValue
+//	@Column(name = "id")
 	int customer_id;
+
 	String company_name;
 	String customer_name;
 	String contact_number_1;

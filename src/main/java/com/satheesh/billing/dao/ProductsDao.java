@@ -24,16 +24,25 @@ public class ProductsDao {
 
 	private Logger logger = LogManager.getLogger(this.getClass());
 
-	public List<Product> getProducts(String productName) throws DbException {
+	public List<Product> getProducts(String productName, int page, int size) throws DbException {
 		List<Product> products = new ArrayList<>();
-		String sql = "SELECT * FROM product where is_active = true order by product_name limit 1000";
-		if (productName != null && productName.trim().length() > 0) {
-			sql = "SELECT * FROM product where is_active = true and lower(product_name) like '%" + productName.toLowerCase()
-					+ "%'  order by product_name limit 1000";
-		}
+		int limit = (size <= 0) ? 10 : size;
+		int offset = (page <= 1) ? 0 : (page - 1) * limit;
 
+		List<Map<String, Object>> results;
+		String sql = "SELECT * FROM product where is_active = true ";
+
+		if (productName == null || productName.trim().length() == 0) {
+			sql += " order by product_name limit ? offset ?";
+			results = jdbc.queryForList(sql, limit, offset);
+		} else {
+			productName = "%" + productName.trim().toLowerCase() + "%";
+			sql += " and lower(product_name) like ? order by product_name limit ? offset ?";
+			results = jdbc.queryForList(sql, productName, limit, offset);
+		}
+		
 		logger.debug("Query : " + sql);
-		List<Map<String, Object>> results = jdbc.queryForList(sql);
+
 		if (results != null) {
 			for (Map<String, Object> map : results) {
 				int product_id = (Integer) map.get("id");

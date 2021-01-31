@@ -47,8 +47,6 @@ $(document).ready(function () {
 
 });
 
-var api_host = 'http://65.0.149.38';
-
 function displayCustomer(inputCompany) {
     let customers = getCustomers(inputCompany);
     let tableBody = '';
@@ -100,7 +98,7 @@ function showDeleteCustomerModal(customer) {
 function deleteCustomer(customer_id) {
     $('#deleteCustomerErrorAlert').hide();
     $.ajax({
-        url: api_host + "/customer/" + customer_id,
+        url: properties.api_host + "/customer/" + customer_id,
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -120,7 +118,7 @@ function deleteCustomer(customer_id) {
 
 function getCustomers(inputCompany) {
     var customers = [];
-    let customerUrl = api_host + "/customer"
+    let customerUrl = properties.api_host + "/customer"
     if (inputCompany) {
         customerUrl += '?search=' + encodeURIComponent(inputCompany);
     }
@@ -171,7 +169,7 @@ function validateCustomer(customer) {
 function createCustomer(customer) {
     $('#addCustomerErrorAlert').hide();
     $.ajax({
-        url: api_host + "/customer",
+        url: properties.api_host + "/customer",
         method: 'POST',
         data: JSON.stringify(customer),
         headers: {
@@ -198,7 +196,7 @@ function updateCustomer(customer) {
     console.log(customer);
     $('#editCustomerErrorAlert').hide();
     $.ajax({
-        url: api_host + "/customer/" + customer.customer_id,
+        url: properties.api_host + "/customer/" + customer.customer_id,
         method: 'PUT',
         data: JSON.stringify(customer),
         headers: {

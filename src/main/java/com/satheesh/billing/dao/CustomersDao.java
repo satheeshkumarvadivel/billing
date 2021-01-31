@@ -24,19 +24,26 @@ public class CustomersDao {
 
 	private Logger logger = LogManager.getLogger(this.getClass());
 
-	public List<Customer> getCustomers(String search) throws DbException {
+	public List<Customer> getCustomers(String search, int page, int size) throws DbException {
 		List<Customer> customers = new ArrayList<>();
-		String sql = "SELECT * FROM customer where is_active = true order by company_name limit 1000";
-		if (search != null && search.trim().length() > 0) {
-			search = search.toLowerCase();
-			sql = "SELECT * FROM customer where is_active = true and lower(company_name) like '%" + search
-					+ "%' OR lower(customer_name) like '%" + search + "%' OR  lower(contact_number_1) like '%" + search
-					+ "%' OR lower(contact_number_1) like '%" + search + "%' OR  lower(address) like '%" + search
-					+ "%' OR lower(email) like '%" + search + "%'  order by company_name limit 1000";
+		int limit = (size <= 0) ? 10 : size;
+		int offset = (page <= 1) ? 0 : (page - 1) * limit;
+		List<Map<String, Object>> results;
+
+		String sql = "SELECT * FROM customer where is_active = true ";
+		if (search == null || search.trim().length() == 0) {
+			sql += " order by company_name limit ? offset ?";
+			results = jdbc.queryForList(sql, limit, offset);
+		} else {
+			search = "%" + search.trim().toLowerCase() + "%";
+			sql += " and lower(company_name) like ? "
+					+ " OR lower(customer_name) like ? OR  lower(contact_number_1) like ? "
+					+ " OR lower(contact_number_1) like ? OR  lower(address) like ? "
+					+ " OR lower(email) like ? order by company_name limit ? offset ?";
+			results = jdbc.queryForList(sql, search, search, search, search, search, search, limit, offset);
 		}
 
 		logger.info("Query : " + sql);
-		List<Map<String, Object>> results = jdbc.queryForList(sql);
 		if (results != null) {
 			for (Map<String, Object> map : results) {
 				int customer_id = (Integer) map.get("id");
