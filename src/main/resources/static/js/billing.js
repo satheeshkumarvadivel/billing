@@ -12,6 +12,15 @@ $(document).ready(function () {
     $('#productQuantity').keyup(function () {
         updateTotalInvoiceItemAmount();
     });
+
+    $('#searchInvoiceItem').keyup(function () {
+        populateInvoiceItems($('#searchInvoiceItem').val());
+    });
+
+    $('#customerPhNumber').keyup(function () {
+        populateCustomerList($('#customerPhNumber').val());
+    });
+
     $('#amountReceived').keyup(function () {
         updateRemainingAmount();
     });
@@ -34,11 +43,13 @@ $(document).ready(function () {
 
     populateInvoiceItems();
 
+    populateCustomerList();
+
 
 });
 
-function populateInvoiceItems() {
-    let products = getProducts();
+function populateInvoiceItems(product_search) {
+    let products = getProducts(product_search);
     let listItems = '';
     products.forEach(product => {
         if (product.in_stock_qty <= 0) {
@@ -70,6 +81,17 @@ function populateInvoiceItems() {
         product.in_stock_qty = e.currentTarget.attributes.in_stock_qty.value;
         showAddInvoiceItemModal(product);
     });
+}
+
+function populateCustomerList(customer_search) {
+
+    let customers = getCustomers(customer_search);
+    let customerList = '';
+    for (let i = 0; i < customers.length; i++) {
+        customerList += '<a class="dropdown-item" onclick="javascript:selectCustomer(\'' + customers[i].customer_name + ":" + customers[i].customer_id + '\')">'
+            + customers[i].customer_name + '</a>';
+    }
+    $('#customerSearchList').html(customerList);
 }
 
 function showAddInvoiceItemModal(product) {
@@ -181,12 +203,18 @@ function addInvoiceItem() {
         item.price = parseFloat($('#productPrice').val());
         invoice.items.push(item);
         let invoiceRow = '<tr id="product-' + $('#productId').val() + '">';
-        invoiceRow += '<td>' + count + '</td>';
+        invoiceRow += '<td class="product-sno">' + count + '</td>';
         invoiceRow += '<td>' + $('#productName').val() + '</td>';
         invoiceRow += '<td id="product-' + $('#productId').val() + '-price">' + $('#productPrice').val() + '</td>';
         invoiceRow += '<td id="product-' + $('#productId').val() + '-qty">' + $('#productQuantity').val() + '</td>';
-        invoiceRow += '<td id="product-' + $('#productId').val() + '-total">' + $('#totalAmount').val() + '</td><td><a href="#" class="text-danger"> Remove </a></td>';
+        invoiceRow += '<td id="product-' + $('#productId').val() + '-total">' + $('#totalAmount').val(); + '</td>';
+        invoiceRow += '<td><a class="remove_product text-danger" product_id=' + $('#productId').val() + ' href="#" > Remove </a></td>';
         $('#invoice_table_body').append(invoiceRow);
+
+        $('.remove_product').click(function (e) {
+            removeProduct(e);
+        });
+
     } else {
         $('#product-' + $('#productId').val() + '-price').html($('#productPrice').val());
         $('#product-' + $('#productId').val() + '-qty').html($('#productQuantity').val());
@@ -198,11 +226,33 @@ function addInvoiceItem() {
 
 }
 
-function getProducts(productName) {
+function removeProduct(e) {
+    let productId = e.currentTarget.attributes.product_id.value;
+    for (i = 0; i < invoice.items.length; i++) {
+        if (invoice.items[i].product.product_id == productId) {
+            invoice.items.splice(i, 1);
+        }
+    }
+    $('#invoice_table_body > #product-' + productId).remove();
+    updateTotalCard();
+    redrawSerialNumber();
+}
+
+function redrawSerialNumber() {
+    let items = $('.product-sno');
+    if (items) {
+        for (let i = 0; i < items.length; i++) {
+            items[i].innerText = i + 1;
+            sessionStorage.setItem('invoiceRowCount', i + 1);
+        }
+    }
+}
+
+function getProducts(product_search) {
     var products = [];
     let productUrl = properties.api_host + "/product"
-    if (productName) {
-        productUrl += '?product_name=' + encodeURIComponent(productName);
+    if (product_search) {
+        productUrl += '?product_name=' + encodeURIComponent(product_search);
     }
     $.ajax({
         url: productUrl,
@@ -215,6 +265,25 @@ function getProducts(productName) {
         }
     });
     return products;
+}
+
+function getCustomers(customer_search) {
+    var customers = [];
+    let customerUrl = properties.api_host + "/customer"
+    if (customer_search) {
+        customerUrl += '?search=' + encodeURIComponent(customer_search);
+    }
+    $.ajax({
+        url: customerUrl,
+        async: false,
+        success: function (result) {
+            customers = result;
+        },
+        error: function (result) {
+            customers = [];
+        }
+    });
+    return customers;
 }
 
 function createInvoice() {
@@ -263,4 +332,11 @@ function updateTotalCard() {
     }
     sessionStorage.setItem('invoiceTotalAmount', total);
     $('#totalCardTitle').html('Total : ' + total + ' Rs');
+}
+
+function selectCustomer(customer_string) {
+    let customer_name = customer_string.split(":")[0];
+    let customer_id = customer_string.split(":")[1];
+    $('#customerPhNumber').val(customer_name);
+    $('#checkoutCustomerId').val(customer_id);
 }
