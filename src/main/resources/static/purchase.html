@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="libs/bootstrap-4.4.1.min.css">
+
+  <title>Vetrivel Mills</title>
+  <script src="libs/jquery-3.4.1.slim.min.js"></script>
+  <script src="libs/popper.min.js"></script>
+  <script src="libs/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="js/common.js"></script>
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg  navbar-dark bg-primary">
+    <a class="navbar-brand" href="#">
+      <!-- <img src="img/logo.png" width="30" height="30" alt=""> -->
+      VETRIVEL MILLS
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/" id="billingNavItem">
+            BILLING
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="invoices" id="invoiceNavItem">
+            INVOICE
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="customers" id="customersNavItem">
+            CUSTOMERS
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="products" id="productsNavItem">
+            PRODUCTS
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#" id="purchasesNavItem">
+            PURCHASE
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class=".container-fluid" id="app">
+    <div class="row" style="padding-top: 25px;">
+      <div class="col-lg-10 offset-lg-1" id="purchase_table">
+
+        <div v-if="alertMessage != ''" :class="alertClass" role="alert">
+          {{ alertMessage }}
+          <button type="button" class="close" @click="dismissAlert" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="col-lg-6">
+          <input type="text" id="customerSearch" class="form-control  dropdown-toggle" placeholder="Select Customer"
+            aria-label="Search Customer" aria-describedby="customerSearch" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" v-model="selectedCustomerName">
+          <div class="dropdown-menu col-md-11" aria-labelledby="customerSearch" id="customerSearchList">
+            <a class="dropdown-item" @click="selectCustomer(customer)" v-for="customer in customers"> {{
+              customer.customer_name }}</a>
+          </div>
+        </div> <br />
+        <table class="table table-striped table-hover">
+          <thead class="thead-dark">
+            <tr class="row">
+              <th class="col col-lg-1" scope="col">S.No</th>
+              <th class="col col-lg-4" scope="col">Product Name</th>
+              <th class="col col-lg-2" scope="col">Price</th>
+              <th class="col col-lg-2" scope="col">Quantity</th>
+              <th class="col col-lg-1" scope="col">Total</th>
+              <th class="col col-lg-2" scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="row" v-for="(product, index) in selectedProducts">
+              <td class="col col-lg-1">{{ index + 1 }}</td>
+
+              <td class="col col-lg-4">
+                <input type="text" id="productSearch" class="form-control  dropdown-toggle" placeholder="Search Product"
+                  aria-label="Search Product" aria-describedby="productSearch" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false" v-model="product.product_name"
+                  :productId="product.product_id">
+                <div class="dropdown-menu col-md-11" aria-labelledby="productSearch" id="productSearchList">
+                  <a class="dropdown-item" @click="selectProduct($event, product)" v-for="product in products"> {{
+                    product.product_name }}</a>
+                </div>
+              </td>
+
+              <td class="col col-lg-2"><input type="text" class="form-control" aria-describedby="Price"
+                  id="product_price" v-model="product.price" @keyup="updateTotal(product.product_id)" /> </td>
+
+              <td class="col col-lg-2"><input type="text" class="form-control" aria-describedby="Quantity"
+                  :id="product.product_id" v-model="product.quantity" @keyup="updateTotal(product.product_id)" /> </td>
+
+              <td class="col col-lg-1"><span id="product_total">{{product.total}}</span></td>
+
+              <td class="col col-lg-2">
+                <button style="margin-right: 5px;" class="btn btn-primary" @click="addRow">+</button>
+                <button style="margin-right: 5px;" class="btn btn-danger"
+                  @click="removeRow(product.product_id)">-</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-lg-4 offset-lg-7">
+        <div class="card" style="width: 24rem; float: right;">
+          <div class="card-body">
+            <h3 class="card-title" id="totalCardTitle">Total: {{ checkoutTotal }} Rs</h3>
+            <p class="card-subtitle mb-2 text-muted">Inclusive of all taxes</p>
+            <p>Amount Paid: <input type="text" class="form-control" aria-describedby="Amount" v-model="amountPaid" />
+            </p>
+            <p>Remaining Amount:
+              <strong>{{ checkoutTotal - amountPaid }}</strong>
+            </p>
+            <button style="margin-right: 5px;" @click="showPayLaterModal" class="btn btn-primary">Checkout</button>
+            <button class="btn btn-danger" @click="clearSelectedProducts">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pay Later Confirmation Modal -->
+    <div class="modal fade" id="payLaterConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="payLaterHeader"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="payLaterHeader">Pay Later?</h5>
+          </div>
+          <div class="modal-body">
+            The remaining amount {{ checkoutTotal - amountPaid }} Rs will be adjusted in the outstanding amount of the
+            customer.
+            Do you want to continue?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" @click="createPurchase">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/purchase.js"></script>
+</body>
+
+</html>

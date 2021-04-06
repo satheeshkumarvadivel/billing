@@ -25,4 +25,9 @@ public class MainController {
 	public String getInvoice() {
 		return "invoice.html";
 	}
+	
+	@GetMapping("/purchases")
+	public String getPurchase() {
+		return "purchase.html";
+	}
 }

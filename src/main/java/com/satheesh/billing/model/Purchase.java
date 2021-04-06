@@ -4,7 +4,9 @@ import java.util.List;
 
 public class Purchase {
 	int id;
+	int customer_id;
 	float price;
+	float amount_paid;
 	String purchase_date;
 	List<PurchaseItem> items;
 
@@ -14,6 +16,22 @@ public class Purchase {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getCustomer_id() {
+		return customer_id;
+	}
+
+	public void setCustomer_id(int customer_id) {
+		this.customer_id = customer_id;
+	}
+
+	public float getAmount_paid() {
+		return amount_paid;
+	}
+
+	public void setAmount_paid(float amount_paid) {
+		this.amount_paid = amount_paid;
 	}
 
 	public float getPrice() {

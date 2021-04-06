@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.satheesh.billing.exceptions.DbException;
 import com.satheesh.billing.exceptions.ValidationException;
+import com.satheesh.billing.model.CreditStatement;
 import com.satheesh.billing.model.Customer;
 
 @Repository
@@ -98,6 +99,33 @@ public class CustomersDao {
 	public boolean deleteCustomer(int customer_id) {
 		String sql = "UPDATE customer SET is_active = false WHERE id = ?";
 		return jdbc.update(sql, customer_id) > 0;
+	}
+
+	public List<CreditStatement> getAllStatements() {
+		List<CreditStatement> statements = new ArrayList<>();
+		String sql = "select cust.customer_name, cust.outstanding_amount, stmt.customer_id, stmt.amount, stmt.note, "
+				+ "stmt.invoice_id, stmt.purchase_id, stmt.payment_date, stmt.payment_type from customer_credit_statement stmt join customer cust on cust.id = stmt.customer_id";
+		List<Map<String, Object>> results;
+		results = jdbc.queryForList(sql);
+		logger.info("Query : " + sql);
+		if (results != null) {
+			for (Map<String, Object> map : results) {
+				CreditStatement stmt = new CreditStatement();
+				stmt.setCustomer_id((Integer) map.get("customer_id"));
+				stmt.setCustomer_name(String.valueOf(map.get("customer_name")));
+				stmt.setPayment_date(String.valueOf(map.get("payment_date")));
+
+				stmt.setPayment_type(String.valueOf(map.get("payment_type")));
+
+				stmt.setInvoice_id((Integer) map.get("invoice_id"));
+				stmt.setPurchase_id((Integer) map.get("purchase_id"));
+
+				BigDecimal amount = (BigDecimal) map.get("amount");
+				stmt.setAmount(amount.floatValue());
+				statements.add(stmt);
+			}
+		}
+		return statements;
 	}
 
 }

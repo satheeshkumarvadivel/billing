@@ -21,10 +21,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.satheesh.billing.model.Customer;
-import com.satheesh.billing.model.Invoice;
-import com.satheesh.billing.model.InvoiceItem;
-import com.satheesh.billing.model.Product;
 import com.satheesh.billing.model.Purchase;
 import com.satheesh.billing.model.PurchaseItem;
 import com.satheesh.billing.model.PurchaseItemType;
@@ -48,6 +44,9 @@ public class PurchaseDao {
 
 		if (!purchase.getItems().isEmpty()) {
 			updateStock(purchase);
+		}
+		if (purchase.getPrice() != purchase.getAmount_paid()) {
+			updateOutstandingAmount(purchase, purchase_id);
 		}
 	}
 
@@ -140,7 +139,7 @@ public class PurchaseDao {
 	}
 
 	private int addPurchase(Purchase purchase) {
-		String sql = "INSERT INTO purchase (price) VALUES (?)";
+		String sql = "INSERT INTO purchase (customer_id, amount_paid, price) VALUES (?, ?, ?)";
 		logger.info("Query : " + sql);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -148,7 +147,9 @@ public class PurchaseDao {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
 				PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-				ps.setBigDecimal(1, new BigDecimal(purchase.getPrice()));
+				ps.setInt(1, purchase.getCustomer_id());
+				ps.setBigDecimal(2, new BigDecimal(purchase.getAmount_paid()));
+				ps.setBigDecimal(3, new BigDecimal(purchase.getPrice()));
 				return ps;
 			}
 		}, keyHolder);
@@ -201,5 +202,26 @@ public class PurchaseDao {
 			}
 
 		});
+	}
+
+	private void updateOutstandingAmount(Purchase purchase, int purchase_id) {
+		String get_customer_outstanding_sql = "SELECT outstanding_amount FROM customer WHERE id = ?";
+		BigDecimal outstanding = jdbc.queryForObject(get_customer_outstanding_sql, BigDecimal.class,
+				purchase.getCustomer_id());
+		float outstanding_amount = outstanding.floatValue();
+		String payment_type = "CREDIT";
+		float amount = 0;
+		if (purchase.getAmount_paid() > purchase.getPrice()) {
+			amount = (purchase.getAmount_paid() - purchase.getPrice());
+			outstanding_amount += amount;
+		} else {
+			payment_type = "DEBIT";
+			amount = (purchase.getPrice() - purchase.getAmount_paid());
+			outstanding_amount -= amount;
+		}
+		String statement_sql = "INSERT INTO customer_credit_statement (customer_id, purchase_id, payment_type, amount, note) VALUES (?, ?, ?, ?, ?)";
+		jdbc.update(statement_sql, purchase.getCustomer_id(), purchase_id, payment_type, amount, "PURCHASE");
+		jdbc.update("UPDATE customer SET outstanding_amount = ? WHERE id = ?", outstanding_amount,
+				purchase.getCustomer_id());
 	}
 }

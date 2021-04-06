@@ -156,7 +156,10 @@ public class ValidationUtil {
 
 		if (purchase.getItems() == null || purchase.getItems().isEmpty())
 			throw new ValidationException("Purchase should have atlease one purchase item.");
-
+		
+		if (purchase.getCustomer_id() == 0)
+			throw new ValidationException("Please select a valid customer or create a customer.");
+		
 		if (purchase.getPrice() < 0)
 			throw new ValidationException("Purchase price cannot be negative.");
 
@@ -186,10 +189,10 @@ public class ValidationUtil {
 				throw new ValidationException("Quantity cannot be less than one.");
 
 			if (item.getPrice() < 0)
-				throw new ValidationException("Price cannot be less than one.");
+				throw new ValidationException("Price cannot be less than zero.");
 
 			if (item.getTotal() < 0)
-				throw new ValidationException("Total cannot be less than one.");
+				throw new ValidationException("Total cannot be less than zero.");
 
 			if (item.getPrice() > 0) {
 				item.setTotal(item.getQuantity() * item.getPrice());

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.satheesh.billing.dao.CustomersDao;
 import com.satheesh.billing.exceptions.ValidationException;
+import com.satheesh.billing.model.CreditStatement;
 import com.satheesh.billing.model.Customer;
 import com.satheesh.billing.model.SimpleResponse;
 import com.satheesh.billing.model.SimpleSuccessResponse;
@@ -99,6 +100,20 @@ public class CustomerResource {
 		} catch (Exception e) {
 			logger.error("Exception occurred while updating customer : ", e);
 			return new ResponseEntity<>(new SimpleResponse(500, "ERROR: Unable to delete Customer."),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("customer/statement")
+	public ResponseEntity<?> getStatement() {
+		try {
+			List<CreditStatement> statements = new ArrayList<>();
+			statements = customersDao.getAllStatements();
+			ResponseEntity<List<CreditStatement>> response = new ResponseEntity<>(statements, HttpStatus.OK);
+			return response;
+		} catch (Exception e) {
+			logger.error("Exception occurred while getting customer statement : ", e);
+			return new ResponseEntity<>(new SimpleResponse(500, "ERROR: Unable to get customer credit statement."),
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
