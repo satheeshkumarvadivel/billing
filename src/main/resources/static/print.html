@@ -1,0 +1,60 @@
+<html>
+
+<head>
+    <style>
+        table,
+        th,
+        .lastrow {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 5px;
+            border-right: 1px solid black;
+        }
+    </style>
+</head>
+
+<body style="border: 2px solid black; padding: 10px;">
+    <div style="text-align: center;">
+        <h2>VEERALAKSHMI ELECTRICAL</h2>
+        <p>KALLOORANI</p>
+        <p>GSTIN - 33JUFPS2022L1ZG</p>
+        <p>Ph: 94888 76353</p>
+    </div>
+    <div>
+        <hr />
+        <div>
+            <b>Invoice id : </b> <label id="invoice_id"></label>
+            <section style="float: right; display: block; width: 250px;"><b>Date : </b> <label
+                    id="invoice_date"></label>
+            </section>
+        </div> <br />
+        <div>
+            <b>Customer Name : </b><label id="customer_name"></label>
+        </div><br />
+        <div>
+            <table style="width: 100%; border: 1px solid black;">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceBody">
+
+                </tbody>
+            </table>
+        </div> <br />
+
+    </div>
+    <script src="libs/jquery-3.4.1.slim.min.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/print.js"></script>
+</body>
+
+</html>

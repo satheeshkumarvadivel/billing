@@ -10,7 +10,7 @@ public class MainController {
 	public String getBilling() {
 		return "index.html";
 	}
-	
+
 	@GetMapping("/products")
 	public String getProduct() {
 		return "products.html";
@@ -25,7 +25,12 @@ public class MainController {
 	public String getInvoice() {
 		return "invoice.html";
 	}
-	
+
+	@GetMapping("/print")
+	public String getPrint() {
+		return "print.html";
+	}
+
 	@GetMapping("/purchases")
 	public String getPurchase() {
 		return "purchase.html";

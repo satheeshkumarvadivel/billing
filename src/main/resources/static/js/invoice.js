@@ -5,6 +5,11 @@ $(document).ready(function () {
         deleteProduct(e.currentTarget.attributes.deleteproductid.value);
     });
 
+    $('#printInvoice').click(function () {
+        $('#viewInvoiceModal').modal('hide');
+        window.open("/print", '_blank').focus();
+    });
+
     $('#addProductModal').on('show.bs.modal', function (e) {
         $('#addProductErrorAlert').hide();
         $('#productName').removeClass('is-invalid');
@@ -50,6 +55,7 @@ function getInvoiceDetails(invoice_id) {
         async: false,
         success: function (result) {
             constructInvoicePurchaseDetails(result[0]);
+            localStorage.setItem('current_invoice', JSON.stringify(result[0]));
         },
         error: function (result) {
             alert("ERROR: Unable to get invoice details.");
@@ -97,8 +103,6 @@ function constructInvoicePurchaseDetails(invoice) {
 
 function openViewInvoiceModal() {
     $('#viewInvoiceModal').modal('show');
-
-
 }
 
 function editProduct() {
