@@ -5,6 +5,7 @@ import java.util.List;
 public class Purchase {
 	int id;
 	int customer_id;
+	String customer_name;
 	float price;
 	float amount_paid;
 	String purchase_date;
@@ -58,10 +59,19 @@ public class Purchase {
 		this.items = items;
 	}
 
+	public String getCustomer_name() {
+		return customer_name;
+	}
+
+	public void setCustomer_name(String customer_name) {
+		this.customer_name = customer_name;
+	}
+
 	@Override
 	public String toString() {
-		return "Purchase [id=" + id + ", price=" + price + ", purchase_date=" + purchase_date + ", items=" + items
-				+ "]";
+		return "Purchase [amount_paid=" + amount_paid + ", customer_id=" + customer_id + ", customer_name="
+				+ customer_name + ", id=" + id + ", items=" + items + ", price=" + price + ", purchase_date="
+				+ purchase_date + "]";
 	}
 
 }

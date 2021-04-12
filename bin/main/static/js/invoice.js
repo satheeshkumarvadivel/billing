@@ -49,7 +49,7 @@ function getInvoiceDetails(invoice_id) {
         url: invoiceUrl,
         async: false,
         success: function (result) {
-            openViewInvoiceModal(result[0]);
+            constructInvoicePurchaseDetails(result[0]);
         },
         error: function (result) {
             alert("ERROR: Unable to get invoice details.");
@@ -57,10 +57,47 @@ function getInvoiceDetails(invoice_id) {
     });
 }
 
+function constructInvoicePurchaseDetails(invoice) {
+    let tableBody = "";
+    tableBody += '<tr><td align="center" colspan="5" style="font-weight: 600; font-size: 20px;">VETRI MASALA</td></tr>';
+    tableBody += '<tr><td align="left" class="invoice_table_heading">Inv No</td><td align="left"> :' + invoice.invoice_id +
+        '</td></tr><tr>';
+    let date = new Date(invoice.invoice_date);
+    let invoice_date = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear() + " " + (date.getHours() % 12) + ":" + date.getMinutes() + (date.getHours() >= 12 ? ' PM' : ' AM');
 
-function openViewInvoiceModal(invoice) {
+    tableBody += '<tr><td align="left" class="invoice_table_heading">Inv Date</td><td align="left"> :' + invoice_date +
+        '</td></tr><tr>';
+    tableBody += `<tr>
+						  <td align="left" class="invoice_table_heading">S.NO</td>
+                          <td align="left" class="invoice_table_heading">PRODUCT NAME</td>
+                          <td align="center" class="invoice_table_heading">QTY</td>
+                          <td align="center" class="invoice_table_heading">PRICE</td>
+                          <td align="right" class="invoice_table_heading">TOTAL</td>
+                        </tr>`;
+    let i = 1;
+    if (typeof invoice == 'object') {
+        if (invoice.customer.customer_name == 'null') {
+            invoice.customer.customer_name = '';
+        }
+        invoice.items.forEach(invoice_item => {
+            tableBody += `<tr>
+                          <td align="left">` + i + `</td>
+                          <td align="left">` + invoice_item.product.product_name + `</td>
+                          <td align="center">`+ invoice_item.quantity + `</td>
+                          <td align="center">`+ invoice_item.price + `</td>
+                          <td align="right">`+ invoice_item.total + `</td>
+                        </tr>`;
+            i = i + 1;
+        });
+    }
+    $('#invoice_customer_puchasedetails').html(tableBody);
+    openViewInvoiceModal();
+}
+
+
+function openViewInvoiceModal() {
     $('#viewInvoiceModal').modal('show');
-    
+
 
 }
 

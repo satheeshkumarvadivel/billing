@@ -1,3 +1,3 @@
 var properties = {
-    api_host: 'http://localhost:8080'
+    api_host: 'http://localhost:8000'
 }

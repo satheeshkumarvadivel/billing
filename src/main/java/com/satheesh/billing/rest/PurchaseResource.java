@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,10 +43,22 @@ public class PurchaseResource {
 		}
 	}
 
+	@GetMapping("/purchase/{purchaseId}")
+	public ResponseEntity<?> getPurchasesById(@PathVariable(value = "purchaseId") Integer purchaseId) {
+		try {
+			Purchase purchase = purchaseDao.getPurchaseById(purchaseId);
+			return new ResponseEntity<Purchase>(purchase, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error("Exception occurred while getting purchase : ", e);
+			return new ResponseEntity<>(new SimpleResponse(500, "ERROR: Unable to get purchase details."),
+					HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@PostMapping("/purchase")
 	public ResponseEntity<?> createPurchase(@RequestBody Purchase purchase) {
 		try {
-			
+
 			ValidationUtil.isValidPurchase(purchase);
 
 			purchaseDao.createPurchase(purchase);

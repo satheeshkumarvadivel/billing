@@ -43,13 +43,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="products" id="productsNavItem">
-            PRODUCTS
+          <a class="nav-link" href="/view_purchase" id="purchaseNavItem">
+            PURCHASE
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="purchases" id="purchasesNavItem">
-            PURCHASE
+          <a class="nav-link" href="products" id="productsNavItem">
+            PRODUCTS
           </a>
         </li>
       </ul>
@@ -60,7 +60,7 @@
       <div class="col-lg-10 offset-lg-1">
         <div class="input-group mb-3">
           <input type="text" id="searchProductInput" class="form-control" placeholder="Search Product Name"
-            aria-label="Search Product Name" aria-describedby="searchProductButton">
+            aria-label="Search Customer Name" aria-describedby="searchProductButton">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="searchProductButton">Search</button>
             <button class="btn btn-outline-secondary" type="button" id="clearProductButton">Clear</button>
@@ -96,59 +96,7 @@
                   <div class="row">
                     <table style="width:100%">
 
-                      <tbody>
-                        <tr>
-                          <td align="center" colspan="5" style="font-weight: 600; font-size: 20px;">VETRI MASALA</td>
-                        </tr>
-                        <tr>
-                          <td align="left" class="invoice_table_heading">Inv No</td>
-                          <td align="left"> : 1001</td>
-                        </tr>
-                        <tr>
-                          <td align="left" class="invoice_table_heading">Date</td>
-                          <td align="left"> : 07/11/2020</td>
-                        </tr>
-                        <hr />
-                        <tr>
-                          <td align="left" class="invoice_table_heading">S.NO</td>
-                          <td align="left" class="invoice_table_heading">PRODUCT NAME</td>
-                          <td align="center" class="invoice_table_heading">QTY</td>
-                          <td align="center" class="invoice_table_heading">PRICE</td>
-                          <td align="right" class="invoice_table_heading">TOTAL</td>
-                        </tr>
-                        <tr>
-                          <td align="left">1</td>
-                          <td align="left">Vetri Chicken Masala 100g</td>
-                          <td align="center">2</td>
-                          <td align="center">15 Rs</td>
-                          <td align="right">30 Rs</td>
-                        </tr>
-                        <tr>
-                          <td align="left">2</td>
-                          <td align="left">Vetri Fish Fry Masala 150g</td>
-                          <td align="center">1</td>
-                          <td align="center">25 Rs</td>
-                          <td align="right">25 Rs</td>
-                        </tr>
-                        <tr>
-                          <td align="left">3</td>
-                          <td align="left">Vetri Mutton Masala 100g</td>
-                          <td align="center">3</td>
-                          <td align="center">18 Rs</td>
-                          <td align="right">46 Rs</td>
-                        </tr>
-                        <tr>
-                          <td colspan="5">
-                            <hr />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td></td>
-                          <td></td>
-                          <td class="invoice_table_heading">Total: </td>
-                          <td align="right" class="invoice_table_heading">101 Rs</td>
-                        </tr>
+                      <tbody id="invoice_customer_puchasedetails">
 
                       </tbody>
                     </table>

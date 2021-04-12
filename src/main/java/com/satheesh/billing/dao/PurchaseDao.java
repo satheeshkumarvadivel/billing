@@ -79,18 +79,15 @@ public class PurchaseDao {
 
 		List<Map<String, Object>> results;
 
-		String sql = "select pur.id, pur.purchase_date, pur.price as purchase_amount, item.id as item_id, item.product_id,  item.item_type, item.item_name, prod.product_name,  "
-				+ "item.description, item.batch_no, item.quantity, item.price, item.quantity, item.total from purchase_item item left join purchase pur on pur.id = item.purchase_id "
-				+ "left outer join product prod on item.product_id = prod.id ";
+		String sql = "select pur.id, pur.purchase_date, pur.price, pur.amount_paid, cus.customer_name from purchase pur join customer cus on pur.customer_id = cus.id ";
 		if (search == null || search.trim().length() == 0) {
 			sql += " order by pur.purchase_date desc limit ? offset ? ";
 			results = jdbc.queryForList(sql, limit, offset);
 		} else {
 			search = "%" + search.trim().toLowerCase() + "%";
-			sql += " WHERE lower(item.item_type) like ? OR lower(item.item_name) like ? OR lower(prod.product_name) like ?"
-					+ " OR lower(item.batch_no) like ?";
+			sql += " WHERE lower(cus.customer_name) like ? ";
 			sql += " order by pur.purchase_date desc limit ? offset ?";
-			results = jdbc.queryForList(sql, search, search, search, limit, offset);
+			results = jdbc.queryForList(sql, search, limit, offset);
 		}
 
 		logger.info("Query : " + sql);
@@ -100,42 +97,60 @@ public class PurchaseDao {
 				Purchase purchase = new Purchase();
 				purchase.setId((Integer) map.get("id"));
 				purchase.setPurchase_date(String.valueOf(map.get("purchase_date")));
+				purchase.setCustomer_name(String.valueOf(map.get("customer_name")));
 
-				BigDecimal purchase_amount = (BigDecimal) map.get("purchase_amount");
+				BigDecimal purchase_amount = (BigDecimal) map.get("price");
 				purchase.setPrice(purchase_amount.floatValue());
 
-				List<PurchaseItem> items = new ArrayList<>();
-				PurchaseItem item = new PurchaseItem();
+				BigDecimal amount_paid = (BigDecimal) map.get("amount_paid");
+				purchase.setAmount_paid(amount_paid.floatValue());
 
-				item.setId((Integer) map.get("item_id"));
-				item.setPurchase_id((Integer) map.get("id"));
-				item.setItem_type(PurchaseItemType.valueOf(String.valueOf(map.get("item_type"))));
-				if (item.getItem_type().equals(PurchaseItemType.PRODUCT)) {
-					item.setItem_name(String.valueOf(map.get("product_name")));
-				} else {
-					item.setItem_name(String.valueOf(map.get("item_name")));
-				}
-				item.setDescription(String.valueOf(map.get("description")));
-				Integer prod_id = (Integer) map.get("product_id");
-				if (prod_id == null) {
-					prod_id = 0;
-				}
-				item.setProduct_id(prod_id);
-				item.setBatch_no(String.valueOf(map.get("batch_no")));
-				item.setQuantity((Integer) map.get("quantity"));
-
-				BigDecimal price = (BigDecimal) map.get("price");
-				item.setPrice(price.floatValue());
-
-				BigDecimal total = (BigDecimal) map.get("total");
-				item.setTotal(total.floatValue());
-				items.add(item);
-				purchase.setItems(items);
 				purchaseList.add(purchase);
 			}
 		}
 		return purchaseList;
 
+	}
+
+	public Purchase getPurchaseById(int purchaseId) {
+
+		String sql = "select pur.id, pur.price as purchase_total, pur.amount_paid, pur.purchase_date, cus.customer_name, pr.product_name, item.quantity, item.price, item.total "
+				+ "from purchase_item item join product pr on item.product_id = pr.id "
+				+ "join purchase pur on item.purchase_id = pur.id " + "join customer cus on pur.customer_id = cus.id "
+				+ "where item.purchase_id = ?";
+		List<Map<String, Object>> results;
+		results = jdbc.queryForList(sql, purchaseId);
+		Purchase purchase = new Purchase();
+		List<PurchaseItem> items = new ArrayList<>();
+		if (results != null) {
+			for (Map<String, Object> map : results) {
+				purchase.setId((Integer) map.get("id"));
+				purchase.setPurchase_date(String.valueOf(map.get("purchase_date")));
+				purchase.setCustomer_name(String.valueOf(map.get("customer_name")));
+
+				BigDecimal purchase_amount = (BigDecimal) map.get("purchase_total");
+				purchase.setPrice(purchase_amount.floatValue());
+
+				BigDecimal amount_paid = (BigDecimal) map.get("amount_paid");
+				purchase.setAmount_paid(amount_paid.floatValue());
+
+				PurchaseItem item = new PurchaseItem();
+				item.setItem_name(String.valueOf(map.get("product_name")));
+
+				BigDecimal item_price = (BigDecimal) map.get("price");
+				item.setPrice(item_price.floatValue());
+
+				item.setQuantity((Integer) map.get("quantity"));
+
+				BigDecimal total = (BigDecimal) map.get("total");
+				item.setTotal(total.floatValue());
+
+				items.add(item);
+			}
+			purchase.setItems(items);
+		}
+
+		return purchase;
 	}
 
 	private int addPurchase(Purchase purchase) {

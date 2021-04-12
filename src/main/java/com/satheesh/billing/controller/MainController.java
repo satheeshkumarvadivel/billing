@@ -30,4 +30,9 @@ public class MainController {
 	public String getPurchase() {
 		return "purchase.html";
 	}
+
+	@GetMapping("/view_purchase")
+	public String getPurchaseView() {
+		return "view_purchase.html";
+	}
 }

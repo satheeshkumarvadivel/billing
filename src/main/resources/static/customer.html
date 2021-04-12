@@ -41,14 +41,14 @@
             CUSTOMERS
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/view_purchase" id="purchaseNavItem">
+            PURCHASE
+          </a>
+        </li>
         <li class="nav-item ">
           <a class="nav-link" href="products" id="productsNavItem">
             PRODUCTS
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="purchases" id="purchasesNavItem">
-            PURCHASE
           </a>
         </li>
       </ul>
@@ -57,15 +57,16 @@
   <div class=".container-fluid">
     <div class="row" style="padding-top: 25px;">
       <div class="col-lg-10 offset-lg-1">
-	  <div class="input-group mb-3">
-          <input type="text" id="searchCustomerInput" class="form-control" placeholder="Search Company name/Customer name/mobile/email/address"
-            aria-label="Search Product Name" aria-describedby="searchCustomerButton">
+        <div class="input-group mb-3">
+          <input type="text" id="searchCustomerInput" class="form-control"
+            placeholder="Search Company name/Customer name/mobile/email/address" aria-label="Search Product Name"
+            aria-describedby="searchCustomerButton">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="searchCustomerButton">Search</button>
             <button class="btn btn-outline-secondary" type="button" id="clearCustomerButton">Clear</button>
           </div>
         </div>
-        
+
         <table class="table table-striped table-bordered">
           <thead class="thead-dark">
             <tr>
@@ -75,20 +76,20 @@
               <th scope="col">Phone Number</th>
               <th scope="col">Email</th>
               <th scope="col">Address</th>
-			  <th scope="col">Outstanding</th>
-			  <th scope="col">Action</th>
+              <th scope="col">Outstanding</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody id="customers_table_body">
-		</tbody>
+          </tbody>
         </table>
-		<!-- Button trigger modal -->
+        <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomerModal"
           style="float: right;">
           Add Customer
         </button>
       </div>
-	   <!-- Modal -->
+      <!-- Modal -->
       <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -101,48 +102,56 @@
             </div>
             <div class="modal-body">
               <form>
-  
-    <div class="form-group ">
-      <label for="inputCompany">Company Name</label>
-	   
-      <input type="text" class="form-control" id="inputCompany" placeholder="Company Name"  aria-describedby="companyHelp">
-      <small id="companyHelp" class="form-text text-muted">Please provide a company name. This will
+
+                <div class="form-group ">
+                  <label for="inputCompany">Company Name</label>
+
+                  <input type="text" class="form-control" id="inputCompany" placeholder="Company Name"
+                    aria-describedby="companyHelp">
+                  <small id="companyHelp" class="form-text text-muted">Please provide a company name. This will
                     be used to search a particular company.</small>
-    </div>
-    <div class="form-group ">
-      <label for="inputCustomer">Customer Name</label>
-      <input type="text" class="form-control" id="inputCustomer" placeholder="Customer Name"  aria-describedby="customerHelp">
+                </div>
+                <div class="form-group ">
+                  <label for="inputCustomer">Customer Name</label>
+                  <input type="text" class="form-control" id="inputCustomer" placeholder="Customer Name"
+                    aria-describedby="customerHelp">
                   <small id="customerHelp" class="form-text text-muted">Please provide a Customer name . This will
                     be used to a search customer .</small>
-    </div>
-  
-  <div class="form-group">
-    <label for="inputAddress">Address</label>
-    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"  aria-describedby="addressHelp">
-                  <small id="addressHelp" class="form-text text-muted">Please provide an address for the customer. This will
+                </div>
+
+                <div class="form-group">
+                  <label for="inputAddress">Address</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
+                    aria-describedby="addressHelp">
+                  <small id="addressHelp" class="form-text text-muted">Please provide an address for the customer. This
+                    will
                     be used to search a particular address of the customer.</small>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="inputPhone">Mobile Number</label>
-      <input type="text" class="form-control" id="inputPhone" placeholder="Mobile Number"  aria-describedby="mobileHelp">
-                  <small id="mobileHelp" class="form-text text-muted">Please provide a mobile number to contact customer. </small>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="inputEmail">Email</label>
-      <input type="email;" class="form-control" id="inputEmail" placeholder="Email"  aria-describedby="emailHelp">
-                  <small id="emailHelp" class="form-text text-muted">Please provide a email for  customer.</small>
-    </div>
-	
-  </div>
- <div class="form-group ">
-      <label for="inputOutstanding">Outstanding</label>
-      <input type="text" class="form-control" id="inputOutstanding"  aria-describedby="outstandingHelp">
-                  <small id="outstandingHelp" class="form-text text-muted">Please provide a oustanding amount for the products. This will
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputPhone">Mobile Number</label>
+                    <input type="text" class="form-control" id="inputPhone" placeholder="Mobile Number"
+                      aria-describedby="mobileHelp">
+                    <small id="mobileHelp" class="form-text text-muted">Please provide a mobile number to contact
+                      customer. </small>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail">Email</label>
+                    <input type="email;" class="form-control" id="inputEmail" placeholder="Email"
+                      aria-describedby="emailHelp">
+                    <small id="emailHelp" class="form-text text-muted">Please provide a email for customer.</small>
+                  </div>
+
+                </div>
+                <div class="form-group ">
+                  <label for="inputOutstanding">Outstanding</label>
+                  <input type="text" class="form-control" id="inputOutstanding" aria-describedby="outstandingHelp">
+                  <small id="outstandingHelp" class="form-text text-muted">Please provide a oustanding amount for the
+                    products. This will
                     be helpful to know a amount pending.</small>
-    </div>
- 
-</form>
+                </div>
+
+              </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -151,9 +160,9 @@
           </div>
         </div>
       </div>
-<!-- Edit Product Modal -->
-      <div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModalLabel"
-        aria-hidden="true">
+      <!-- Edit Product Modal -->
+      <div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog"
+        aria-labelledby="editCustomerModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -172,45 +181,57 @@
                     </div>
                     <form>
                       <div class="form-group ">
-      <label for="editInputCompany">Company Name*</label>
-	  <input type="text" class="form-control" id="editCustomerId" style="display: none;">
-      <input type="text" class="form-control" id="editInputCompany" placeholder="Company Name"  aria-describedby="editCompanyHelp">
-      <small id="editCompanyHelp" class="form-text text-muted">Please provide a company name. This will
-                    be used to search a particular company.</small>
-    </div>
-    <div class="form-group ">
-      <label for="editInputCustomer">Customer Name</label>
-      <input type="text" class="form-control" id="editInputCustomer" placeholder="Customer Name"  aria-describedby="editCustomerHelp">
-                  <small id="editCustomerHelp" class="form-text text-muted">Please provide a Customer name . This will
-                    be used to a search customer .</small>
-    </div>
-  
-  <div class="form-group">
-    <label for="editInputAddress">Address</label>
-    <input type="text" class="form-control" id="editInputAddress" placeholder="1234 Main St"  aria-describedby="editAddressHelp">
-                  <small id="editAddressHelp" class="form-text text-muted">Please provide an address for the customer. This will
-                    be used to search a particular address of the customer.</small>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="editInputPhone">Mobile Number</label>
-      <input type="text" class="form-control" id="editInputPhone" placeholder="Mobile Number"  aria-describedby="editMobileHelp">
-                  <small id="editMobileHelp" class="form-text text-muted">Please provide a mobile number to contact customer. </small>
-    </div>
-    <div class="form-group col-md-6">
-      <label for="editInputEmail">Email</label>
-      <input type="email;" class="form-control" id="editInputEmail" placeholder="Email"  aria-describedby="editEmailHelp">
-                  <small id="editEmailHelp" class="form-text text-muted">Please provide a email for  customer.</small>
-    </div>
-	
-  </div>
- <div class="form-group ">
-      <label for="editInputOutstanding">Outstanding</label>
-      <input type="text" class="form-control" id="editInputOutstanding"  aria-describedby="editOutstandingHelp">
-                  <small id="editOutstandingHelp" class="form-text text-muted">Please provide a oustanding amount for the products. This will
-                    be helpful to know a amount pending.</small>
-    </div>
-</form>
+                        <label for="editInputCompany">Company Name*</label>
+                        <input type="text" class="form-control" id="editCustomerId" style="display: none;">
+                        <input type="text" class="form-control" id="editInputCompany" placeholder="Company Name"
+                          aria-describedby="editCompanyHelp">
+                        <small id="editCompanyHelp" class="form-text text-muted">Please provide a company name. This
+                          will
+                          be used to search a particular company.</small>
+                      </div>
+                      <div class="form-group ">
+                        <label for="editInputCustomer">Customer Name</label>
+                        <input type="text" class="form-control" id="editInputCustomer" placeholder="Customer Name"
+                          aria-describedby="editCustomerHelp">
+                        <small id="editCustomerHelp" class="form-text text-muted">Please provide a Customer name . This
+                          will
+                          be used to a search customer .</small>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="editInputAddress">Address</label>
+                        <input type="text" class="form-control" id="editInputAddress" placeholder="1234 Main St"
+                          aria-describedby="editAddressHelp">
+                        <small id="editAddressHelp" class="form-text text-muted">Please provide an address for the
+                          customer. This will
+                          be used to search a particular address of the customer.</small>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="editInputPhone">Mobile Number</label>
+                          <input type="text" class="form-control" id="editInputPhone" placeholder="Mobile Number"
+                            aria-describedby="editMobileHelp">
+                          <small id="editMobileHelp" class="form-text text-muted">Please provide a mobile number to
+                            contact customer. </small>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="editInputEmail">Email</label>
+                          <input type="email;" class="form-control" id="editInputEmail" placeholder="Email"
+                            aria-describedby="editEmailHelp">
+                          <small id="editEmailHelp" class="form-text text-muted">Please provide a email for
+                            customer.</small>
+                        </div>
+
+                      </div>
+                      <div class="form-group ">
+                        <label for="editInputOutstanding">Outstanding</label>
+                        <input type="text" class="form-control" id="editInputOutstanding"
+                          aria-describedby="editOutstandingHelp">
+                        <small id="editOutstandingHelp" class="form-text text-muted">Please provide a oustanding amount
+                          for the products. This will
+                          be helpful to know a amount pending.</small>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -225,8 +246,8 @@
       </div>
 
       <!-- Delete Product Confirmation Modal -->
-      <div class="modal fade" id="deleteCustomerModal" tabindex="-1" role="dialog" aria-labelledby="deleteCustomerHeader"
-        aria-hidden="true">
+      <div class="modal fade" id="deleteCustomerModal" tabindex="-1" role="dialog"
+        aria-labelledby="deleteCustomerHeader" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -247,7 +268,8 @@
         </div>
       </div>
 
-	   </div>
-	</div>
-   </body>
+    </div>
+  </div>
+</body>
+
 </html>
