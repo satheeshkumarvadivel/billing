@@ -21,6 +21,11 @@ public class MainController {
 		return "customer.html";
 	}
 
+	@GetMapping("/suppliers")
+	public String getSupplier() {
+		return "supplier.html";
+	}
+
 	@GetMapping("/invoices")
 	public String getInvoice() {
 		return "invoice.html";

@@ -34,7 +34,7 @@ public class ProductResource {
 	@GetMapping("product")
 	public ResponseEntity<?> getProducts(@RequestParam(value = "product_name", required = false) String product_name,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+			@RequestParam(value = "size", required = false, defaultValue = "100") int size) {
 		try {
 			List<Product> products = productsDao.getProducts(product_name, page, size);
 			ResponseEntity<List<Product>> response = new ResponseEntity<>(products, HttpStatus.OK);

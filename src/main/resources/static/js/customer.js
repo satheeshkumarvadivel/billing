@@ -39,8 +39,8 @@ $(document).ready(function () {
         $('#inputCustomer').val('');
         $('#inputAddress').val('');
         $('#inputPhone').val('');
-		$('#inputEmail').val('');
-		$('#inputOutstanding').val('');
+        $('#inputEmail').val('');
+        $('#inputOutstanding').val('');
     });
 
     displayCustomer();
@@ -53,7 +53,11 @@ function displayCustomer(inputCompany) {
     let i = 1;
     if (typeof customers == 'object') {
         customers.forEach(customer => {
-        	tableBody += '<tr><th scope="row">' + i + '</th><td>' + customer.company_name + '</td><td>' + customer.customer_name + '</td><td>' + customer.contact_number_1 + '</td><td>' + customer.email + '</td><td>' + customer.address + '</td><td>' + customer.outstanding_amount + '</td>' +
+            let style = 'style="color: green;"';
+            if (customer.outstanding_amount < 0) {
+                style = 'style="color: red;"';
+            }
+            tableBody += '<tr><th scope="row">' + i + '</th><td>' + customer.company_name + '</td><td>' + customer.customer_name + '</td><td>' + customer.contact_number_1 + '</td><td>' + customer.email + '</td><td>' + customer.address + '</td><td ' + style + '>' + customer.outstanding_amount + '</td>' +
                 '<td> <a href="#" style="padding-right: 10px;" onClick=\'openEditCustomerModal(' + JSON.stringify(customer) + ')\'> Edit </a> <a href="#" class="text-danger" onClick=\'showDeleteCustomerModal(' + JSON.stringify(customer) + ')\'> Delete </a></td></tr>';
             i = i + 1;
         });
@@ -68,23 +72,23 @@ function openEditCustomerModal(customer) {
     $('#editInputCustomer').val(customer.customer_name);
     $('#editInputAddress').val(customer.address);
     $('#editInputPhone').val(customer.contact_number_1);
-	$('#editInputEmail').val(customer.email);
-	$('#editInputOutstanding').val(customer.outstanding_amount);
+    $('#editInputEmail').val(customer.email);
+    $('#editInputOutstanding').val(customer.outstanding_amount);
     $('#editCustomerId').val(customer.customer_id);
 }
 
 function editCustomer() {
-	let customer = {};
+    let customer = {};
     customer.company_name = $('#editInputCompany').val();
     customer.customer_name = $('#editInputCustomer').val();
-	customer.contact_number_1 = $('#editInputPhone').val();
+    customer.contact_number_1 = $('#editInputPhone').val();
     customer.address = $('#editInputAddress').val();
-	customer.email = $('#editInputEmail').val();
-	customer.outstanding_amount = $('#editInputOutstanding').val();
+    customer.email = $('#editInputEmail').val();
+    customer.outstanding_amount = $('#editInputOutstanding').val();
     customer.customer_id = $('#editCustomerId').val();
+    customer.customer_type = 'SALES';
     if (validateCustomer(customer)) {
         updateCustomer(customer);
-    
     }
 }
 
@@ -118,9 +122,9 @@ function deleteCustomer(customer_id) {
 
 function getCustomers(inputCompany) {
     var customers = [];
-    let customerUrl = properties.api_host + "/customer"
+    let customerUrl = properties.api_host + "/customer?type=SALES"
     if (inputCompany) {
-        customerUrl += '?search=' + encodeURIComponent(inputCompany);
+        customerUrl += '&search=' + encodeURIComponent(inputCompany);
     }
     $.ajax({
         url: customerUrl,
@@ -139,11 +143,12 @@ function addNewCustomer() {
     let customer = {};
     customer.company_name = $('#inputCompany').val();
     customer.customer_name = $('#inputCustomer').val();
-	customer.contact_number_1 = $('#inputPhone').val();
+    customer.contact_number_1 = $('#inputPhone').val();
     customer.address = $('#inputAddress').val();
-	customer.email = $('#inputEmail').val();
-	customer.outstanding_amount = $('#inputOutstanding').val();
-   
+    customer.email = $('#inputEmail').val();
+    customer.outstanding_amount = $('#inputOutstanding').val();
+    customer.customer_type = 'SALES';
+
     if (validateCustomer(customer)) {
         createCustomer(customer);
     }

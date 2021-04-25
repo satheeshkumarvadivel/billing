@@ -32,20 +32,21 @@ public class CustomerResource {
 	@Autowired
 	CustomersDao customersDao;
 
-//	@Autowired
-//	CustomerRepository custRepo;
+	// @Autowired
+	// CustomerRepository custRepo;
 
 	@GetMapping("customer")
 	public ResponseEntity<?> getCustomers(@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+			@RequestParam(value = "size", required = false, defaultValue = "100") int size) {
 		try {
 			List<Customer> customers = new ArrayList<>();
-			customers = customersDao.getCustomers(search, page, size);
-//			if (search != null) {
-//				customers = custRepo.searchCustomer(search.trim().toLowerCase());				
-//			} else {
-//			}
+			customers = customersDao.getCustomers(search, type, page, size);
+			// if (search != null) {
+			// customers = custRepo.searchCustomer(search.trim().toLowerCase());
+			// } else {
+			// }
 			ResponseEntity<List<Customer>> response = new ResponseEntity<>(customers, HttpStatus.OK);
 			return response;
 		} catch (Exception e) {

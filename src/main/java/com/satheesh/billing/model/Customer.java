@@ -3,9 +3,9 @@ package com.satheesh.billing.model;
 //@Entity
 public class Customer {
 
-//	@Id
-//	@GeneratedValue
-//	@Column(name = "id")
+	// @Id
+	// @GeneratedValue
+	// @Column(name = "id")
 	int customer_id;
 
 	String company_name;
@@ -15,6 +15,7 @@ public class Customer {
 	String address;
 	String email;
 	float outstanding_amount;
+	String customer_type;
 
 	public Customer() {
 		super();
@@ -36,6 +37,14 @@ public class Customer {
 
 	public String getCompany_name() {
 		return company_name;
+	}
+
+	public String getCustomer_type() {
+		return customer_type;
+	}
+
+	public void setCustomer_type(String customer_type) {
+		this.customer_type = customer_type;
 	}
 
 	public void setCompany_name(String company_name) {

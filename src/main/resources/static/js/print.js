@@ -6,7 +6,13 @@
         });
 
         function renderInvoicePrintPage(invoice) {
+            let urlParams = new URLSearchParams(window.location.search);
+            let quote = urlParams.get('quote');
             $('#invoice_id').html(invoice.invoice_id);
+            if (quote == 'true') {
+                $('#company_info').html('<h2>QUOTATION</h2>');
+                $('#invoice_id').hide();
+            }
             $('#customer_name').html(invoice.customer.customer_name);
             $('#invoice_date').html(formatDate(invoice.invoice_date));
 

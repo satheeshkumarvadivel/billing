@@ -25,23 +25,26 @@ public class CustomersDao {
 
 	private Logger logger = LogManager.getLogger(this.getClass());
 
-	public List<Customer> getCustomers(String search, int page, int size) throws DbException {
+	public List<Customer> getCustomers(String search, String type, int page, int size) throws DbException {
 		List<Customer> customers = new ArrayList<>();
 		int limit = (size <= 0) ? 10 : size;
 		int offset = (page <= 1) ? 0 : (page - 1) * limit;
+		if (type == null || type.length() == 0) {
+			type = "SALES";
+		}
 		List<Map<String, Object>> results;
 
-		String sql = "SELECT * FROM customer where is_active = true ";
+		String sql = "SELECT * FROM customer where is_active = true AND customer_type = ?";
 		if (search == null || search.trim().length() == 0) {
 			sql += " order by company_name limit ? offset ?";
-			results = jdbc.queryForList(sql, limit, offset);
+			results = jdbc.queryForList(sql, type, limit, offset);
 		} else {
 			search = "%" + search.trim().toLowerCase() + "%";
-			sql += " and lower(company_name) like ? "
+			sql += " and (lower(company_name) like ? "
 					+ " OR lower(customer_name) like ? OR  lower(contact_number_1) like ? "
 					+ " OR lower(contact_number_1) like ? OR  lower(address) like ? "
-					+ " OR lower(email) like ? order by company_name limit ? offset ?";
-			results = jdbc.queryForList(sql, search, search, search, search, search, search, limit, offset);
+					+ " OR lower(email) like ?) order by company_name limit ? offset ?";
+			results = jdbc.queryForList(sql, type, search, search, search, search, search, search, limit, offset);
 		}
 
 		logger.info("Query : " + sql);
@@ -65,11 +68,11 @@ public class CustomersDao {
 
 	@Transactional
 	public boolean createCustomer(Customer customer) throws ValidationException {
-		String sql = "INSERT INTO customer (company_name, customer_name, contact_number_1, contact_number_2, address, email, outstanding_amount) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO customer (company_name, customer_name, contact_number_1, contact_number_2, address, email, outstanding_amount, customer_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		try {
 			jdbc.update(sql, customer.getCompany_name(), customer.getCustomer_name(), customer.getContact_number_1(),
 					customer.getContact_number_2(), customer.getAddress(), customer.getEmail(),
-					customer.getOutstanding_amount());
+					customer.getOutstanding_amount(), customer.getCustomer_type());
 
 			if (customer.getOutstanding_amount() > 0) {
 				int customer_id = jdbc.queryForObject("SELECT id FROM customer WHERE company_name = ?", Integer.class,
@@ -85,11 +88,11 @@ public class CustomersDao {
 	}
 
 	public boolean updateCustomer(int customerId, Customer customer) throws ValidationException {
-		String sql = "UPDATE customer SET company_name = ?, customer_name = ?, contact_number_1 = ?, contact_number_2 = ?, address = ?, email = ?, outstanding_amount = ? WHERE id = ?";
+		String sql = "UPDATE customer SET company_name = ?, customer_name = ?, contact_number_1 = ?, contact_number_2 = ?, address = ?, email = ?, outstanding_amount = ?, customer_type = ? WHERE id = ?";
 		try {
 			return jdbc.update(sql, customer.getCompany_name(), customer.getCustomer_name(),
 					customer.getContact_number_1(), customer.getContact_number_2(), customer.getAddress(),
-					customer.getEmail(), customer.getOutstanding_amount(), customerId) > 0;
+					customer.getEmail(), customer.getOutstanding_amount(), customer.getCustomer_type(), customerId) > 0;
 		} catch (DuplicateKeyException ex) {
 			throw new ValidationException(customer.getCompany_name()
 					+ " already exists. Please provide a unique company name or Edit the existing company name.");

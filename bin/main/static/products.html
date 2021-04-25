@@ -42,6 +42,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/suppliers" id="suppliersNavItem">
+            SUPPLIERS
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/view_purchase" id="purchaseNavItem">
             PURCHASE
           </a>
@@ -65,21 +70,23 @@
             <button class="btn btn-outline-secondary" type="button" id="clearProductButton">Clear</button>
           </div>
         </div>
-        <table class="table table-striped table-bordered table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">S.No</th>
-              <th scope="col">Product Name</th>
-              <th scope="col">Description</th>
-              <th scope="col">Price</th>
-              <th scope="col">In Stock</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody id="products_table_body">
+        <div class="row" style="max-height: 500px; overflow:auto">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">S.No</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">In Stock</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="products_table_body">
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal"
           style="float: right;">

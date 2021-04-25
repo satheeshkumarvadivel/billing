@@ -21,6 +21,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.satheesh.billing.exceptions.ValidationException;
 import com.satheesh.billing.model.Purchase;
 import com.satheesh.billing.model.PurchaseItem;
 import com.satheesh.billing.model.PurchaseItemType;
@@ -72,22 +73,57 @@ public class PurchaseDao {
 
 	}
 
-	public List<Purchase> getPurchases(String search, int page, int size) {
+	public List<Purchase> getPurchases(String search, String dateRange, int page, int size) throws ValidationException {
 		List<Purchase> purchaseList = new ArrayList<>();
 		int limit = (size <= 0) ? 10 : size;
 		int offset = (page <= 1) ? 0 : (page - 1) * limit;
+		String from = null;
+		String to = null;
+		if (dateRange != null && dateRange.length() > 0) {
+			String[] dates = dateRange.split(",");
+			if (dates.length != 2) {
+				throw new ValidationException("Invalid Date Range Provided. Format should be YYYY-MM-DD,YYYY-MM-DD");
+			}
+			from = dates[0];
+			to = dates[1];
+			if (from.split("-").length != 3 || to.split("-").length != 3) {
+				throw new ValidationException("Invalid Date Range Provided. Format should be YYYY-MM-DD,YYYY-MM-DD");
+			}
+		}
 
 		List<Map<String, Object>> results;
 
 		String sql = "select pur.id, pur.purchase_date, pur.price, pur.amount_paid, cus.customer_name from purchase pur join customer cus on pur.customer_id = cus.id ";
+
+		if (from != null && from.trim().length() > 0) {
+			sql += " WHERE pur.purchase_date BETWEEN cast( ? as timestamp) AND cast( ? as timestamp) ";
+		}
+
 		if (search == null || search.trim().length() == 0) {
 			sql += " order by pur.purchase_date desc limit ? offset ? ";
-			results = jdbc.queryForList(sql, limit, offset);
+			if (from != null && from.trim().length() > 0) {
+				results = jdbc.queryForList(sql, from.trim(), to.trim(), limit, offset);
+			} else {
+				results = jdbc.queryForList(sql, limit, offset);
+			}
 		} else {
+			sql += (from != null) ? " AND (" : " WHERE ";
+			int id = 0;
+			try {
+				id = Integer.parseInt(search);
+			} catch (Exception e) {
+				logger.debug("Unable to cast search into Integer : ", e.getMessage());
+				id = 0;
+			}
 			search = "%" + search.trim().toLowerCase() + "%";
-			sql += " WHERE lower(cus.customer_name) like ? ";
+			sql += " pur.id = ? OR lower(cus.customer_name) like ? ";
+			sql += (from != null) ? " ) " : "";
 			sql += " order by pur.purchase_date desc limit ? offset ?";
-			results = jdbc.queryForList(sql, search, limit, offset);
+			if (from != null && from.trim().length() > 0) {
+				results = jdbc.queryForList(sql, from.trim(), to.trim(), id, search, limit, offset);
+			} else {
+				results = jdbc.queryForList(sql, id, search, limit, offset);
+			}
 		}
 
 		logger.info("Query : " + sql);

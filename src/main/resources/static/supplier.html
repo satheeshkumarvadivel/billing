@@ -14,7 +14,7 @@
   <script src="libs/popper.min.js"></script>
   <script src="libs/bootstrap.min.js"></script>
   <script src="js/common.js"></script>
-  <script src="js/customer.js"></script>
+  <script src="js/supplier.js"></script>
 </head>
 
 <body>
@@ -36,14 +36,14 @@
             INVOICE
           </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="#" id="customersNavItem">
+        <li class="nav-item">
+          <a class="nav-link" href="customers" id="customersNavItem">
             CUSTOMERS
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="suppliers" id="suppliersNavItem">
-            SUPPLIERS
+        <li class="nav-item active">
+          <a class="nav-link" href="#" id="customersNavItem">
+            SUPPLIER
           </a>
         </li>
         <li class="nav-item">
@@ -64,7 +64,7 @@
       <div class="col-lg-10 offset-lg-1">
         <div class="input-group mb-3">
           <input type="text" id="searchCustomerInput" class="form-control"
-            placeholder="Search Company name/Customer name/mobile/email/address" aria-label="Search Product Name"
+            placeholder="Search Company name/Supplier name/mobile/email/address" aria-label="Search Supplier Name"
             aria-describedby="searchCustomerButton">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="searchCustomerButton">Search</button>
@@ -77,7 +77,7 @@
               <tr>
                 <th scope="col">S.No</th>
                 <th scope="col">Company Name</th>
-                <th scope="col">Customer Name</th>
+                <th scope="col">Supplier Name</th>
                 <th scope="col">Phone Number</th>
                 <th scope="col">Email</th>
                 <th scope="col">Address</th>
@@ -92,7 +92,7 @@
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomerModal"
           style="float: right;">
-          Add Customer
+          Add Supplier
         </button>
       </div>
       <!-- Modal -->
@@ -101,7 +101,7 @@
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="addCustomerModalLabel">Add Customer</h5>
+              <h5 class="modal-title" id="addCustomerModalLabel">Add Supplier</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -118,20 +118,20 @@
                     be used to search a particular company.</small>
                 </div>
                 <div class="form-group ">
-                  <label for="inputCustomer">Customer Name</label>
+                  <label for="inputCustomer">Supplier Name</label>
                   <input type="text" class="form-control" id="inputCustomer" placeholder="Customer Name"
                     aria-describedby="customerHelp">
-                  <small id="customerHelp" class="form-text text-muted">Please provide a Customer name . This will
-                    be used to a search customer .</small>
+                  <small id="customerHelp" class="form-text text-muted">Please provide a Supplier name . This will
+                    be used to a search supplier .</small>
                 </div>
 
                 <div class="form-group">
                   <label for="inputAddress">Address</label>
                   <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St"
                     aria-describedby="addressHelp">
-                  <small id="addressHelp" class="form-text text-muted">Please provide an address for the customer. This
+                  <small id="addressHelp" class="form-text text-muted">Please provide an address for the Supplier. This
                     will
-                    be used to search a particular address of the customer.</small>
+                    be used to search a particular address of the Supplier.</small>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
@@ -139,13 +139,13 @@
                     <input type="text" class="form-control" id="inputPhone" placeholder="Mobile Number"
                       aria-describedby="mobileHelp">
                     <small id="mobileHelp" class="form-text text-muted">Please provide a mobile number to contact
-                      customer. </small>
+                      Supplier. </small>
                   </div>
                   <div class="form-group col-md-6">
                     <label for="inputEmail">Email</label>
                     <input type="email;" class="form-control" id="inputEmail" placeholder="Email"
                       aria-describedby="emailHelp">
-                    <small id="emailHelp" class="form-text text-muted">Please provide a email for customer.</small>
+                    <small id="emailHelp" class="form-text text-muted">Please provide a email for Supplier.</small>
                   </div>
 
                 </div>
@@ -172,7 +172,7 @@
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="editCustomerModalLabel">Edit Customer</h5>
+              <h5 class="modal-title" id="editCustomerModalLabel">Edit Supplier</h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -196,12 +196,12 @@
                           be used to search a particular company.</small>
                       </div>
                       <div class="form-group ">
-                        <label for="editInputCustomer">Customer Name</label>
-                        <input type="text" class="form-control" id="editInputCustomer" placeholder="Customer Name"
+                        <label for="editInputCustomer">Supplier Name</label>
+                        <input type="text" class="form-control" id="editInputCustomer" placeholder="Supplier Name"
                           aria-describedby="editCustomerHelp">
-                        <small id="editCustomerHelp" class="form-text text-muted">Please provide a Customer name . This
+                        <small id="editCustomerHelp" class="form-text text-muted">Please provide a Supplier name . This
                           will
-                          be used to a search customer .</small>
+                          be used to a search Supplier .</small>
                       </div>
 
                       <div class="form-group">
@@ -209,8 +209,8 @@
                         <input type="text" class="form-control" id="editInputAddress" placeholder="1234 Main St"
                           aria-describedby="editAddressHelp">
                         <small id="editAddressHelp" class="form-text text-muted">Please provide an address for the
-                          customer. This will
-                          be used to search a particular address of the customer.</small>
+                          Supplier. This will
+                          be used to search a particular address of the Supplier.</small>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-6">
@@ -218,14 +218,14 @@
                           <input type="text" class="form-control" id="editInputPhone" placeholder="Mobile Number"
                             aria-describedby="editMobileHelp">
                           <small id="editMobileHelp" class="form-text text-muted">Please provide a mobile number to
-                            contact customer. </small>
+                            contact Supplier. </small>
                         </div>
                         <div class="form-group col-md-6">
                           <label for="editInputEmail">Email</label>
                           <input type="email;" class="form-control" id="editInputEmail" placeholder="Email"
                             aria-describedby="editEmailHelp">
                           <small id="editEmailHelp" class="form-text text-muted">Please provide a email for
-                            customer.</small>
+                            Supplier.</small>
                         </div>
 
                       </div>
@@ -257,14 +257,14 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="deleteCustomerHeader">Delete Customer</h5>
+              <h5 class="modal-title" id="deleteCustomerHeader">Delete Supplier</h5>
             </div>
             <div class="modal-body">
               <div class="alert alert-danger fade show" role="alert" id="deleteCustomerErrorAlert"
                 style="display: none;">
                 <strong>ERROR: </strong> <span id="deleteCustomerErrorMsg"></span>
               </div>
-              Do you want to delete the customer?
+              Do you want to delete the Supplier?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

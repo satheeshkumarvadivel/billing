@@ -31,11 +31,15 @@ public class PurchaseResource {
 
 	@GetMapping("/purchase")
 	public ResponseEntity<?> getPurchases(@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "date", required = false) String dateRange,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+			@RequestParam(value = "size", required = false, defaultValue = "100") int size) {
 		try {
-			List<Purchase> purchaseList = purchaseDao.getPurchases(search, page, size);
+			List<Purchase> purchaseList = purchaseDao.getPurchases(search, dateRange, page, size);
 			return new ResponseEntity<List<Purchase>>(purchaseList, HttpStatus.OK);
+		} catch (ValidationException valEx) {
+			logger.debug(valEx.getMessage());
+			return new ResponseEntity<>(new SimpleResponse(400, valEx.getMessage()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			logger.error("Exception occurred while getting purchase : ", e);
 			return new ResponseEntity<>(new SimpleResponse(500, "ERROR: Unable to get purchase details."),

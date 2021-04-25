@@ -1,5 +1,14 @@
 $(document).ready(function () {
 
+    $(function () {
+        $("#fromDateInput").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+        $("#toDateInput").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+    });
+
     $('#deleteProductConfirm').click(function (e) {
         console.log('delete product');
         deleteProduct(e.currentTarget.attributes.deleteproductid.value);
@@ -8,6 +17,28 @@ $(document).ready(function () {
     $('#printInvoice').click(function () {
         $('#viewInvoiceModal').modal('hide');
         window.open("/print", '_blank').focus();
+    });
+
+    $('#printQuote').click(function () {
+        $('#viewInvoiceModal').modal('hide');
+        window.open("/print?quote=true", '_blank').focus();
+    });
+
+    $('#searchProductButton').click(function () {
+        displayInvoices($('#searchProductInput').val(), ($("#fromDateInput").val() + "," + $('#toDateInput').val()));
+    });
+
+    $('#searchProductInput').keypress(function (e) {
+        if (e.keyCode == 13) {
+            displayInvoices($('#searchProductInput').val(), ($("#fromDateInput").val() + "," + $('#toDateInput').val()));
+        }
+    });
+
+    $('#clearProductButton').click(function () {
+        $('#searchProductInput').val('');
+        $('#fromDateInput').val('');
+        $('#toDateInput').val('');
+        displayInvoices('');
     });
 
     $('#addProductModal').on('show.bs.modal', function (e) {
@@ -24,8 +55,8 @@ $(document).ready(function () {
 });
 
 
-function displayInvoices(search) {
-    let invoices = getInvoices(search);
+function displayInvoices(search, dateRange) {
+    let invoices = getInvoices(search, dateRange);
     let tableBody = '';
     let i = 1;
     if (typeof invoices == 'object') {
@@ -34,7 +65,7 @@ function displayInvoices(search) {
                 invoice.customer.customer_name = '';
             }
             let date = new Date(invoice.invoice_date);
-            let invoice_date = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " " + (date.getHours() % 12) + ":" + date.getMinutes() + (date.getHours() >= 12 ? ' PM' : ' AM');
+            let invoice_date = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
             tableBody += '<tr><th scope="row">' + invoice.invoice_id + '</th><td>' + invoice_date + '</td><td>' + invoice.customer.customer_name + '</td><td>' + invoice.customer.contact_number_1 + '</td><td>' + invoice.price + '</td>' +
                 '<td> <a href="#" style="padding-right: 10px;" onClick=\'showInvoiceDetails(' + JSON.stringify(invoice.invoice_id) + ')\'> View </a></td></tr>';
             i = i + 1;
@@ -117,11 +148,14 @@ function editProduct() {
     }
 }
 
-function getInvoices(search) {
+function getInvoices(search, dateRange) {
     var invoices = [];
-    let invoiceUrl = properties.api_host + "/invoice"
+    let invoiceUrl = properties.api_host + "/invoice?"
     if (search) {
-        invoiceUrl += '?search=' + encodeURIComponent(search);
+        invoiceUrl += 'search=' + encodeURIComponent(search);
+    }
+    if (dateRange) {
+        invoiceUrl += '&date=' + encodeURIComponent(dateRange);
     }
     $.ajax({
         url: invoiceUrl,

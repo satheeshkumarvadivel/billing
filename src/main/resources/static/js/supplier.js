@@ -86,7 +86,7 @@ function editCustomer() {
     customer.email = $('#editInputEmail').val();
     customer.outstanding_amount = $('#editInputOutstanding').val();
     customer.customer_id = $('#editCustomerId').val();
-    customer.customer_type = 'SALES';
+    customer.customer_type = 'PURCHASE';
     if (validateCustomer(customer)) {
         updateCustomer(customer);
     }
@@ -122,7 +122,7 @@ function deleteCustomer(customer_id) {
 
 function getCustomers(inputCompany) {
     var customers = [];
-    let customerUrl = properties.api_host + "/customer?type=SALES"
+    let customerUrl = properties.api_host + "/customer?type=PURCHASE"
     if (inputCompany) {
         customerUrl += '&search=' + encodeURIComponent(inputCompany);
     }
@@ -147,7 +147,7 @@ function addNewCustomer() {
     customer.address = $('#inputAddress').val();
     customer.email = $('#inputEmail').val();
     customer.outstanding_amount = $('#inputOutstanding').val();
-    customer.customer_type = 'SALES';
+    customer.customer_type = 'PURCHASE';
 
     if (validateCustomer(customer)) {
         createCustomer(customer);
@@ -216,7 +216,7 @@ function updateCustomer(customer) {
             if (result.responseJSON && result.responseJSON.message) {
                 $('#editCustomerErrorMsg').html(result.responseJSON.message);
             } else {
-                $('#editCustomerErrorMsg').html("Unable to save product information.");
+                $('#editCustomerErrorMsg').html("Unable to save supplier information.");
             }
             $('#editCustomerErrorAlert').show();
         }

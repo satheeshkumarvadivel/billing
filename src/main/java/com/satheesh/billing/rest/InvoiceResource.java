@@ -34,11 +34,15 @@ public class InvoiceResource {
 
 	@GetMapping("/invoice")
 	public ResponseEntity<?> getInvoices(@RequestParam(value = "search", required = false) String search,
+			@RequestParam(value = "date", required = false) String dateRange,
 			@RequestParam(value = "page", required = false, defaultValue = "1") int page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") int size) {
+			@RequestParam(value = "size", required = false, defaultValue = "100") int size) {
 		try {
-			List<Invoice> invoices = invoiceDao.getInvoices(search, page, size);
+			List<Invoice> invoices = invoiceDao.getInvoices(search, dateRange, page, size);
 			return new ResponseEntity<List<Invoice>>(invoices, HttpStatus.OK);
+		} catch (ValidationException valEx) {
+			logger.debug(valEx.getMessage());
+			return new ResponseEntity<>(new SimpleResponse(400, valEx.getMessage()), HttpStatus.BAD_REQUEST);
 		} catch (Exception e) {
 			logger.error("Exception occurred while creating invoice : ", e);
 			return new ResponseEntity<>(new SimpleResponse(500, "ERROR: Unable to get invoice details."),

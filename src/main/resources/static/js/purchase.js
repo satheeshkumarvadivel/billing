@@ -24,7 +24,7 @@ var app = new Vue({
             }
         },
         getCustomers: async function () {
-            let res = await fetch(properties.api_host + "/customer");
+            let res = await fetch(properties.api_host + "/customer?type='PURCHASE'");
             if (res.status == 200) {
                 this.customers = await res.json();
             } else {

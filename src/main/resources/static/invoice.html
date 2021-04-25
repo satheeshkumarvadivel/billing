@@ -14,6 +14,8 @@
   <script src="libs/jquery-3.4.1.slim.min.js"></script>
   <script src="libs/popper.min.js"></script>
   <script src="libs/bootstrap.min.js"></script>
+  <link href="https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
+  <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="js/common.js"></script>
   <script src="js/invoice.js"></script>
 </head>
@@ -43,6 +45,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/suppliers" id="suppliersNavItem">
+            SUPPLIERS
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/view_purchase" id="purchaseNavItem">
             PURCHASE
           </a>
@@ -58,29 +65,43 @@
   <div class=".container-fluid">
     <div class="row" style="padding-top: 25px;">
       <div class="col-lg-10 offset-lg-1">
+        <div class="form-row">
+          <div class="col mb-3 col-lg-2">
+            <input type="text" id="fromDateInput" class="form-control" placeholder="From Date : YYYY-MM-DD"
+              aria-label="Enter Date Range" aria-describedby="fromDateInput">
+          </div>
+          <div class="col mb-3 col-lg-2">
+            <input type="text" id="toDateInput" class="form-control" placeholder="To Date : YYYY-MM-DD"
+              aria-label="Enter Date Range" aria-describedby="toDateInput">
+          </div>
+        </div>
         <div class="input-group mb-3">
-          <input type="text" id="searchProductInput" class="form-control" placeholder="Search Product Name"
-            aria-label="Search Customer Name" aria-describedby="searchProductButton">
+          <input type="text" id="searchProductInput" class="form-control"
+            placeholder="Search Invoice No/Customer Name/Phone Number" aria-label="Search Customer Name"
+            aria-describedby="searchProductButton">
           <div class="input-group-append">
             <button class="btn btn-outline-secondary" type="button" id="searchProductButton">Search</button>
             <button class="btn btn-outline-secondary" type="button" id="clearProductButton">Clear</button>
           </div>
         </div>
-        <table class="table table-striped table-bordered table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Invoice.No</th>
-              <th scope="col">Invoice Date</th>
-              <th scope="col">Customer Name</th>
-              <th scope="col">Phone Number</th>
-              <th scope="col">Bill Amount</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody id="invoice_table_body">
+        <div class="row" style="max-height: 500px; overflow:auto">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">Invoice.No</th>
+                <th scope="col">Invoice Date</th>
+                <th scope="col">Customer Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Bill Amount</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="invoice_table_body">
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
+
         <div class="modal fade" id="viewInvoiceModal" tabindex="-1" role="dialog"
           aria-labelledby="viewInvoiceModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-md" role="document">
@@ -105,7 +126,8 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" id="printInvoice">Print</button>
+                <button type="button" class="btn btn-success" id="printInvoice">Print Invoice</button>
+                <button type="button" class="btn btn-secondary" id="printQuote">Print Quote</button>
               </div>
             </div>
           </div>

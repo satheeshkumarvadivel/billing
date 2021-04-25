@@ -5,9 +5,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +25,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.satheesh.billing.exceptions.ValidationException;
 import com.satheesh.billing.model.Customer;
 import com.satheesh.billing.model.Invoice;
 import com.satheesh.billing.model.InvoiceItem;
@@ -71,22 +76,56 @@ public class InvoiceDao {
 
 	}
 
-	public List<Invoice> getInvoices(String search, int page, int size) {
+	public List<Invoice> getInvoices(String search, String dateRange, int page, int size) throws ValidationException {
 		List<Invoice> invoices = new ArrayList<>();
 		int limit = (size <= 0) ? 10 : size;
 		int offset = (page <= 1) ? 0 : (page - 1) * limit;
+		String from = null;
+		String to = null;
+		if (dateRange != null && dateRange.length() > 0) {
+			String[] dates = dateRange.split(",");
+			if (dates.length != 2) {
+				throw new ValidationException("Invalid Date Range Provided. Format should be YYYY-MM-DD,YYYY-MM-DD");
+			}
+			from = dates[0];
+			to = dates[1];
+			if (from.split("-").length != 3 || to.split("-").length != 3) {
+				throw new ValidationException("Invalid Date Range Provided. Format should be YYYY-MM-DD,YYYY-MM-DD");
+			}
+		}
 
 		List<Map<String, Object>> results;
 		String sql = "select inv.id, inv.invoice_date as invoice_date, inv.price, inv.payment_received, cust.id as customer_id, cust.company_name, cust.customer_name, cust.contact_number_1 "
 				+ "from invoice inv join customer cust on inv.customer_id = cust.id";
+		if (from != null && from.trim().length() > 0) {
+			sql += " WHERE invoice_date BETWEEN cast( ? as timestamp) AND cast( ? as timestamp) ";
+		}
+
 		if (search == null || search.trim().length() == 0) {
 			sql += " order by invoice_date desc limit ? offset ?";
-			results = jdbc.queryForList(sql, limit, offset);
+			if (from != null && from.trim().length() > 0) {
+				results = jdbc.queryForList(sql, from.trim(), to.trim(), limit, offset);
+			} else {
+				results = jdbc.queryForList(sql, limit, offset);
+			}
 		} else {
+			sql += (from != null) ? " AND (" : " WHERE ";
+			int id = 0;
+			try {
+				id = Integer.parseInt(search);
+			} catch (Exception e) {
+				logger.debug("Unable to cast search into Integer : ", e.getMessage());
+				id = 0;
+			}
 			search = "%" + search.trim().toLowerCase() + "%";
-			sql += " WHERE lower(cust.company_name) like ? OR lower(cust.customer_name) like ? OR lower(cust.contact_number_1) like ?";
+			sql += " inv.id = ? OR lower(cust.customer_name) like ? OR lower(cust.contact_number_1) like ?";
+			sql += (from != null) ? " ) " : "";
 			sql += " order by invoice_date desc limit ? offset ?";
-			results = jdbc.queryForList(sql, search, search, search, limit, offset);
+			if (from != null && from.trim().length() > 0) {
+				results = jdbc.queryForList(sql, from.trim(), to.trim(), id, search, search, limit, offset);
+			} else {
+				results = jdbc.queryForList(sql, id, search, search, limit, offset);
+			}
 		}
 
 		logger.info("Query : " + sql);
@@ -110,6 +149,8 @@ public class InvoiceDao {
 				invoice.setCustomer(customer);
 				invoices.add(invoice);
 			}
+		} else {
+			logger.info("No results returned from the Query");
 		}
 		return invoices;
 
