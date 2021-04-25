@@ -65,7 +65,7 @@ function displayInvoices(search, dateRange) {
                 invoice.customer.customer_name = '';
             }
             let date = new Date(invoice.invoice_date);
-            let invoice_date = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+            let invoice_date = date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
             tableBody += '<tr><th scope="row">' + invoice.invoice_id + '</th><td>' + invoice_date + '</td><td>' + invoice.customer.customer_name + '</td><td>' + invoice.customer.contact_number_1 + '</td><td>' + invoice.price + '</td>' +
                 '<td> <a href="#" style="padding-right: 10px;" onClick=\'showInvoiceDetails(' + JSON.stringify(invoice.invoice_id) + ')\'> View </a></td></tr>';
             i = i + 1;
