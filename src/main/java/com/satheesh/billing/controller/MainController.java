@@ -11,6 +11,11 @@ public class MainController {
 		return "index.html";
 	}
 
+	@GetMapping("/login")
+	public String getLogin() {
+		return "login.html";
+	}
+
 	@GetMapping("/products")
 	public String getProduct() {
 		return "products.html";
