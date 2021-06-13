@@ -96,7 +96,7 @@ function getInvoiceDetails(invoice_id) {
 
 function constructInvoicePurchaseDetails(invoice) {
     let tableBody = "";
-    tableBody += '<tr><td align="center" colspan="5" style="font-weight: 600; font-size: 20px;">VETRI MASALA</td></tr>';
+    tableBody += '<tr><td align="center" colspan="5" style="font-weight: 600; font-size: 20px;">VEERALAKSHMI ELECTRICAL</td></tr>';
     tableBody += '<tr><td align="left" class="invoice_table_heading">Inv No</td><td align="left"> :' + invoice.invoice_id +
         '</td></tr><tr>';
     let date = new Date(invoice.invoice_date);
@@ -154,7 +154,7 @@ function getInvoices(search, dateRange) {
     if (search) {
         invoiceUrl += 'search=' + encodeURIComponent(search);
     }
-    if (dateRange) {
+    if (dateRange && dateRange != ",") {
         invoiceUrl += '&date=' + encodeURIComponent(dateRange);
     }
     $.ajax({

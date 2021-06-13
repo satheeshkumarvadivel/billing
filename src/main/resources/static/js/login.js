@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    localStorage.setItem('tt', 'YWRtaW46dGVzdEAxMQ==');
+    localStorage.setItem('tt', 'TUFTVjpWRVNBNzI2Nw==');
     localStorage.setItem('a', null);
     $('#loginButton').click(check);
 });
